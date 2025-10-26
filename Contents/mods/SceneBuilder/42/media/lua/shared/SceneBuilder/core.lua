@@ -8,10 +8,6 @@ local LOG_TAG = "SceneBuilder Core"
 local log = U.makeLogger(LOG_TAG)
 local assertf = U.assertf
 
--- Injects custom Z-level overrides and also minimal definitions in case "ItemStories"
--- https://steamcommunity.com/sharedfiles/filedetails/?id=3569303590 is not present
-
--- Wire-up snippet for SceneBuilder/core.lua (paste near the top, after util)
 local Lifecycle = require("SceneBuilder/lifecycle")
 local Resolvers = require("SceneBuilder/resolvers")
 local Placers = require("SceneBuilder/placers")

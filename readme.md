@@ -57,12 +57,13 @@ Scene:begin(roomDef, { tag = "demo_lab" })
 * Unfit for Multiplayer.
 * Currently only works indoors with a RoomDef given.
 * Z-height for placed items may not be visually correct on a number of tiles. For improved accuracy and visual realism, use the **ItemStories B42** mod, which, combined with SceneBuilder’s included SpritesSurfaceDimensions Polyfill, provides good-enough results.
+* Missing typehinting for scene definitions
 
 ---
 
 ## Seeing it work
 
-Assuming that you are in debug mode, paste this into your ingame console:
+Assuming that you are in debug mode *and your character stands in a room*, paste this into your ingame console:
 ```lua
 fulldemo = require("SceneBuilder/prefabs/demo_full")
 fulldemo.makeForRoomDef(nil)

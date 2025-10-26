@@ -1,4 +1,4 @@
--- SceneBuilder/placers.lua — scaffold (paste exact bodies as instructed)
+-- SceneBuilder/placers.lua — scaffold
 local U = require("SceneBuilder/util")
 local LOG_TAG = "SceneBuilder Placers"
 local log = U.makeLogger(LOG_TAG)
@@ -583,7 +583,7 @@ local function placeContainer(state, roomDef, spec, sqOverride)
 		return {}, nil
 	end
 
-	-- (unchanged) create the container item and fill contents
+	-- create the container item and fill contents
 	local tn = normType(spec.item)
 	if not tn then
 		log("placeContainer cannot resolve spec.item to string " .. tostring(spec.item))
@@ -625,7 +625,6 @@ local function placeContainer(state, roomDef, spec, sqOverride)
 end
 
 --- Scatter items across viable squares using pool + hashed distribution.
---- Diagnostic version: expanded logging to trace square selection.
 --- @param state table
 --- @param roomDef RoomDef
 --- @param spec table

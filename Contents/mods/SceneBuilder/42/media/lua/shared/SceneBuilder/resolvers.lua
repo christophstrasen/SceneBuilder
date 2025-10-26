@@ -13,7 +13,6 @@
 ---   • Strategy fallback (place.fallback) is a Resolvers policy.
 ---   • Proximity fallback is handled elsewhere (_applyProximityPass).
 
--- SceneBuilder/resolvers.lua — scaffold (paste exact bodies as instructed)
 local U = require("SceneBuilder/util")
 local LOG_TAG = "SceneBuilder Resolvers"
 local log = U.makeLogger(LOG_TAG)
@@ -101,7 +100,7 @@ local function _ensurePlace(strategyOrOpts, opts)
 		room = opts.room,
 		name = opts.name,
 
-		-- proximity (new)
+		-- proximity
 		anchor_proximity = U.clampInt(opts.anchor_proximity == nil and 2 or opts.anchor_proximity, 0),
 		respect_strategy = (opts.respect_strategy == true),
 		proximity_fallback = tostring(opts.proximity_fallback or "ignore-proximity-keep-strategy"),

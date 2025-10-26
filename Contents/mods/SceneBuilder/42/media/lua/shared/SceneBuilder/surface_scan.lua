@@ -1,5 +1,4 @@
 -- Scans a RoomDef for squares containing furniture surfaces suitable for item placement.
--- Build 42 friendly. ≤100 chars/line. No colons in logs.
 -- Returns { { sq=IsoGridSquare, z=number, obj=IsoObject, texture=string }, ... }
 local U = require("SceneBuilder/util") -- for U.log/U.assertf
 local LOG_TAG = "SceneBuilder surface_scan"
@@ -7,7 +6,6 @@ local log = U.makeLogger(LOG_TAG)
 local assertf = U.assertf
 
 local SurfaceScan = {}
--- Global defaults kept in one place.
 local DEFAULT_WHITELIST = { "counter", "table", "desk", "workbench" }
 local DEFAULT_MIN_SURF = 10
 
@@ -232,7 +230,6 @@ end
 
 --- Returns the current default configuration for surface scanning.
 --- Useful for debugging or external introspection.
----
 --- @return table<string, any> defaults
 ---   defaults.whitelist  table<string>
 ---   defaults.minSurface number

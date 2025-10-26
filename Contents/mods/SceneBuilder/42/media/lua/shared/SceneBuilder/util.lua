@@ -1,5 +1,4 @@
 -- SceneBuilder/util.lua
--- Small shared helpers; keep tiny (< ~150 lines). Import where needed.
 
 ---@class SceneBuilder.Util
 local U = {}
