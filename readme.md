@@ -57,7 +57,7 @@ Scene:begin(roomDef, { tag = "demo_lab" })
 * Unfit for Multiplayer.
 * Currently only works indoors with a RoomDef given.
 * Z-height for placed items may not be visually correct on a number of tiles. For improved accuracy and visual realism, use the **ItemStories B42** mod, which, combined with SceneBuilder’s included SpritesSurfaceDimensions Polyfill, provides good-enough results.
-* Incomplete typehinting for scene definitions
+* Typehinting for scene definitions is incomplete
 
 ---
 
@@ -79,7 +79,7 @@ fulldemo.makeForRoomDef(nil)
 | **Scene**    | A one-shot composition combining multiple placers; committed via `:spawn()`.          |
 | **Placer**   | Defines *what* to spawn (`corpse`, `container`, or `scatter`) and knows how to do it. |
 | **Resolver** | Defines *where* to spawn (`"any"`, `"tables_and_counters"`, …).                       |
-| **Anchor**   | A reusable reference point resolved once and used by later placers.                   |
+| **Anchor**   | A reusable reference point helpful to group focus spawn positions                     |
 
 ---
 
