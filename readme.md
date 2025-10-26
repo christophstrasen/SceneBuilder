@@ -2,7 +2,15 @@
 
 _A scene composition framework for Project Zomboid (Build 42), Single Player_
 
-SceneBuilder lets you declaratively **spawn in-world scenes** — corpses, containers, clutter, blood, and more — using a Lua DSL.  
+---
+
+[Steam Workshop → SceneBuilder [b42]](https://steamcommunity.com/sharedfiles/filedetails/?id=3594105442)
+
+> Do **not** copy this repo into your mod but use it as a required dependency instead.
+
+---
+
+SceneBuilder lets modders **spawn in-world scenes** in a **declarative** fashion — corpses, containers, clutter, blood, and more — using a Lua DSL.  
 Scenes are conceptually similar to **vanilla randomized stories** (e.g. from `RBBasic`) or **ItemStories** ([Steam Workshop → ItemStories B42](https://steamcommunity.com/sharedfiles/filedetails/?id=3569303590)).
 
 Unlike those, SceneBuilder scenes are **not automatically distributed** into the world of Project Zomboid but are **meant to be used by modders** for any purpose.
@@ -385,6 +393,7 @@ Scene authors are encouraged to organize and name their own scenes however they 
 * Additional inbuilt resolvers e.g. by doors, windows.
 * Additional placers for live zombies, possibly vehicles.
 * Support passing an IsoGridSquare instead of a named anchor.
+* Find a way to supress ItemStories automatic world spawning for those who want to include that mod just for the SpriteSurfaceDimensions.present.
 * Support for outdoor scenes.
 
 ---
