@@ -88,11 +88,6 @@ function Demo.makeForRoomDef(roomDef)
 			:items("BaseballBat_Broken")
 			:maxItemNum(1) -- from the unique items above, not shuffled at the moment
 			:maxPlacementSquares(1)
-			:postSpawn(Hooks.makeClueTagAndTrack({
-				clue_id = "test_id_1",
-				preventDrop = true,
-				context = "Scatter2",
-			}))
 			:where("tables_and_counters")
 		end)
 		:spawn()
@@ -100,7 +95,7 @@ function Demo.makeForRoomDef(roomDef)
 end
 -- stylua: ignore end
 
-return Demo
+return Demo 
 
 --[[
 -- testing and usage via console

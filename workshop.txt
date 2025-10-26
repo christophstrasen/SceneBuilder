@@ -1,17 +1,21 @@
 version=1
 title=SceneBuilder
-description=⚙️ SceneBuilder — Scene Authoring Library for Project Zomboid (Build 42)
+description=SceneBuilder - A Scene Authoring Library for Project Zomboid (Build 42)
 
-SceneBuilder is a developer library intended for experienced modders and for Build 42 only.
-It provides tools for declarative scene construction, prefab authoring, and surface-aware object placement inside the world.
+SceneBuilder is a developer library intended for experienced modders.
+It provides tools for declarative scene construction, prefab authoring,
+and surface-aware object placement inside the world.
 
-⚠️ This is not gameplay content. It does nothing on its own.
-You are expected to understand Project Zomboid's Lua modding to a basic level before using it.
+This is not gameplay content. It does nothing on its own.
+You are expected to understand Project Zomboid's Lua modding and programming concepts.
 
 For documentation, source code, and examples, visit:
-https://github.com/yourusername/SceneBuilder
+https://github.com/christophstrasen/SceneBuilder
+
+PRs and issues welcome on Github.
 
 Dependencies:
+- ItemStories [b42] (recommended, degraded but functional without it)
 - ItemStories B42 (recommended)
 
 tags=Library;Utility;Build 42;Development

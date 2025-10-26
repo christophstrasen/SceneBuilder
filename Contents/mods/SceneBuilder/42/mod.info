@@ -6,11 +6,4 @@ poster=poster.png
 icon=icon_64.png
 authors=Karmachameleon
 version=0.1
-require=\ItemStoriesB42
 loadModAfer=\ItemStoriesB42
-
-lua {
-    shared = true
-    client = true
-    server = true
-}
