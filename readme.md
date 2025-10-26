@@ -57,7 +57,7 @@ Scene:begin(roomDef, { tag = "demo_lab" })
 * Unfit for Multiplayer.
 * Currently only works indoors with a RoomDef given.
 * Z-height for placed items may not be visually correct on a number of tiles. For improved accuracy and visual realism, use the **ItemStories B42** mod, which, combined with SceneBuilder’s included SpritesSurfaceDimensions Polyfill, provides good-enough results.
-* Missing typehinting for scene definitions
+* Incomplete typehinting for scene definitions
 
 ---
 
@@ -406,6 +406,7 @@ Scene authors are encouraged to organize and name their own scenes however they 
 * Additional placers for live zombies, possibly vehicles.
 * Support passing an IsoGridSquare instead of a named anchor.
 * Find a way to supress ItemStories automatic world spawning for those who want to include that mod just for the SpriteSurfaceDimensions.present.
+* Improve and clean up typehinting
 * Support for outdoor scenes.
 
 ---
