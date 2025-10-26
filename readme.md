@@ -60,6 +60,17 @@ Scene:begin(roomDef, { tag = "demo_lab" })
 
 ---
 
+## Seeing it work
+
+Assuming that you are in debug mode, paste this into your ingame console:
+```lua
+fulldemo = require("SceneBuilder/prefabs/demo_full")
+fulldemo.makeForRoomDef(nil)
+```
+
+---
+
+
 ## Core Concepts
 
 | Term         | Meaning                                                                               |
