@@ -14,9 +14,8 @@ https://github.com/christophstrasen/SceneBuilder
 
 PRs and issues welcome on Github.
 
-Dependencies:
-- ItemStories [b42] (recommended, degraded but functional without it)
-- ItemStories B42 (recommended)
+Recommended mod to pair with for more visually accurate surface placement:
+- ItemStories [b42] https://steamcommunity.com/sharedfiles/filedetails/?id=3569303590
 
 tags=Library;Utility;Build 42;Development
-visibility=Private
+visibility=Public

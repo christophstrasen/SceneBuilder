@@ -9,7 +9,7 @@ function Demo.makeForRoomDef(roomDef)
 		local r = p and p:getCurrentSquare() and p:getCurrentSquare():getRoom()
 		roomDef = r and r:getRoomDef() or nil
 	end
-	-- Use SceneBuilder core (neutral), keep Scene hooks from StoryModeMod.
+
 	local S = require("SceneBuilder/core")
 
 	-- Begin scene; define anchors once (formerly "slots")

@@ -21,12 +21,8 @@ function Demo.makeForRoomDef(roomDef)
 		roomDef = r and r:getRoomDef() or nil
 	end
 
-	-- Use SceneBuilder core (neutral), keep Scene hooks from StoryModeMod.
 	local S = require("SceneBuilder/core")
-	local Hooks = require("StoryModeMod/scene_hooks")
 
-	-- Begin scene; define anchors once (formerly "slots")
-	-- The engine would resolve these to concrete {x,y,z} positions and cache them
 	-- stylua: ignore start
 	S:begin(roomDef, { tag = "demo_full" })
 		:anchors(function(a)
