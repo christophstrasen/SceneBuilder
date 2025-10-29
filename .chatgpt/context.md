@@ -15,7 +15,7 @@
 - **Bias for simplicity** Keep functions short and readable. Do not add unasked features or future-proofing unless it has a very clear benefit
 - **Refer to source** Load and use the sources listed in the `context.md`. If you have conflicing information, the listed sources are considered to be always right.
 - **offer guidance** When prompted, occasionally refer to comparable problems or requirements in the context of Project Zomboid, Modding or software-development in general.
-- **stay light-hearted** When making suggestions or placing comments, it is ok to be cheeky or have a Zomboid-Humor but only as long as it doesn't make you, our comments or logs longer or harder to read
+- **stay light-hearted** When making suggestions or placing comments, it is ok to be cheeky or have a Zomboid-Humor but only as long as it doesn't hurt readability and understanding.
 - **Ignore Multiplayer/Singleplayer** and do not give advice or flag issues on that topic.
 
 ## 2) Output Requirements
