@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": ".."
+		}
+	],
+	"settings": {
+		"stylua.styluaPath": "/run/current-system/sw/bin/stylua",
+		"stylua.targetReleaseVersion": "latest",
+		"vim.enableNeovim": true,
+		"vim.disableExtension": true
+	}
+}
