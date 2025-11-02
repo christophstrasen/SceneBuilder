@@ -1,0 +1,40 @@
+{
+    "Lua.workspace.library": [
+        "~/.steam/steam/steamapps/common/ProjectZomboid/projectzomboid/media/lua",
+        "${addons}/umbrella-unstable/module/library"
+    ],
+    "Lua.runtime.version": "Lua 5.1",
+    "Lua.workspace.checkThirdParty": false,
+    "Lua.addonManager.enable": true,
+    "Lua.codeLens.enable": true,
+    "Lua.completion.callSnippet": "Both",
+    "Lua.hint.arrayIndex": "Enable",
+    "Lua.hint.enable": true,
+    "Lua.misc.executablePath": "/run/current-system/sw/bin/lua-language-server",
+    "Lua.runtime.path": [
+        "?.lua",
+        "?/init.lua",
+        "server/?.lua"
+    ],
+    "Lua.completion.requireSeparator": "/",
+    "Lua.workspace.preloadFileSize": 800,
+    "Lua.diagnostics.globals": [
+    "require",
+    ],
+    // --- Stylua formatter integration ---
+    "[lua]": {
+        "editor.defaultFormatter": "JohnnyMorganz.stylua",
+        "editor.formatOnSave": true
+    },
+    "stylua.styluaPath": "/run/current-system/sw/bin/stylua",
+    "stylua.targetReleaseVersion": "latest",
+
+    // in settings.json
+    "vim.enableNeovim": true,
+    "vim.disableExtension": true,
+    "Lua.runtime.builtin": {
+        "debug": "disable",
+        "io": "disable",
+        "package": "disable"
+    }   
+}
