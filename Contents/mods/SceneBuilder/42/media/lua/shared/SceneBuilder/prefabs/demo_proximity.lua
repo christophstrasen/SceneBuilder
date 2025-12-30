@@ -2,6 +2,10 @@
 -- Minimal showcase for anchor proximity, respect_strategy, and fallback.
 -- Stand in a room with a desk/table and run the console snippet at bottom.
 
+local U = require("SceneBuilder/util")
+local LOG_TAG = "SceneBuilder prefab/demo_proximity"
+local log = U.makeLogger(LOG_TAG)
+
 local Demo = {}
 
 ---@param roomDef any
@@ -61,7 +65,7 @@ function Demo.makeForRoomDef(roomDef)
 			})
 		end)
 		:spawn()
-	print("[demo_proximity] ran for room " .. tostring(roomDef and roomDef:getName()))
+	log("[demo_proximity] ran for room " .. tostring(roomDef and roomDef:getName()))
 end
 -- stylua: ignore end
 

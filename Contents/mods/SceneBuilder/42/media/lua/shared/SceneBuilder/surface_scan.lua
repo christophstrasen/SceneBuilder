@@ -8,6 +8,20 @@ local assertf = U.assertf
 local SurfaceScan = {}
 local DEFAULT_WHITELIST = { "counter", "table", "desk", "workbench" }
 local DEFAULT_MIN_SURF = 10
+local SURFACE_HIT_CACHE_MAX = 512
+
+local function getSpriteRef(obj)
+	if not obj then
+		return nil
+	end
+	if obj.getSpriteName then
+		return obj:getSpriteName()
+	end
+	if obj.getTextureName then
+		return obj:getTextureName()
+	end
+	return nil
+end
 
 --- @class SurfaceHit
 --- @field sq IsoGridSquare
@@ -54,7 +68,7 @@ end
 --- @return boolean
 local function _isWhitelisted(tex, wl)
 	if not wl or #wl == 0 then
-		log("Warning: whitelis to check texture against is missing or empty")
+		log("Warning whitelist to check texture against is missing or empty")
 		return false
 	end
 
@@ -63,18 +77,25 @@ local function _isWhitelisted(tex, wl)
 	end
 	local low = tostring(tex):lower()
 	for _, pat in ipairs(wl) do
-		if low:find(pat, 1, true) then
+		local needle = tostring(pat):lower()
+		if needle ~= "" and low:find(needle, 1, true) then
 			return true
 		end
 	end
 	return false
 end
 
---- Internal cache of surface hits keyed by IsoGridSquare.
---- Weak keys ensure automatic cleanup when the square is unloaded.
---- @TODO implement cleanup routine as kahlua does not have weak tables and we don't want to memory-leak
---- @type table<IsoGridSquare, (SurfaceHit|nil)>
-local surfaceHitBySq = setmetatable({}, { __mode = "k" })
+-- Internal cache of surface hits keyed by square coordinates.
+-- This is intentionally size-bounded because Kahlua does not support weak tables.
+local surfaceHitByKey = {}
+local surfaceHitKeyOrder = {}
+
+local function sqKey(sq)
+	if sq and sq.getX and sq.getY and sq.getZ then
+		return tostring(sq:getX()) .. "," .. tostring(sq:getY()) .. "," .. tostring(sq:getZ())
+	end
+	return tostring(sq)
+end
 
 -- local: probe this ONE square for a best surface hit, or nil
 --- @param sq IsoGridSquare   The square to probe
@@ -94,14 +115,14 @@ local function _probeSquareForSurface(sq, opts)
 	local best, bestZ = nil, -1
 	for i = 0, objs:size() - 1 do
 		local obj = objs:get(i)
-		if obj then
-			local z = surfaceZ(obj)
-			if z and z >= minZ then
-				local tex = obj:getTextureName() or ""
-				if _isWhitelisted(tex, wl) and z > bestZ then
-					bestZ = z
-					best = { sq = sq, z = z, obj = obj, texture = tex }
-				elseif z >= minZ then
+			if obj then
+				local z = surfaceZ(obj)
+				if z and z >= minZ then
+					local tex = getSpriteRef(obj) or ""
+					if _isWhitelisted(tex, wl) and z > bestZ then
+						bestZ = z
+						best = { sq = sq, z = z, obj = obj, texture = tex }
+					elseif z >= minZ then
 					log("_probeSquareForSurface reject " .. tostring(tex) .. " z " .. tostring(z))
 				end
 			elseif z then
@@ -134,7 +155,17 @@ function SurfaceScan.rememberSurfaceHit(sq, hit)
 	if not sq or not hit then
 		return
 	end
-	surfaceHitBySq[sq] = hit
+	local key = sqKey(sq)
+	if surfaceHitByKey[key] == nil then
+		surfaceHitKeyOrder[#surfaceHitKeyOrder + 1] = key
+		if #surfaceHitKeyOrder > SURFACE_HIT_CACHE_MAX then
+			local oldKey = table.remove(surfaceHitKeyOrder, 1)
+			if oldKey then
+				surfaceHitByKey[oldKey] = nil
+			end
+		end
+	end
+	surfaceHitByKey[key] = { texture = hit.texture, z = hit.z, obj = hit.obj }
 end
 
 --- Retrieves a previously remembered surface hit for a given square.
@@ -147,14 +178,15 @@ function SurfaceScan.getSurfaceHit(sq, opts)
 	if not sq then
 		return nil
 	end
-	local hit = surfaceHitBySq[sq]
-	if hit ~= nil then
-		return hit
+	local cached = surfaceHitByKey[sqKey(sq)]
+	if cached ~= nil then
+		return { sq = sq, z = cached.z, obj = cached.obj, texture = cached.texture }
 	end
-	hit = _probeSquareForSurface(sq, opts)
+
+	local hit = _probeSquareForSurface(sq, opts)
 	if hit then
-		surfaceHitBySq[sq] = hit
-		log("getSurfaceHit cache-hit " .. tostring(hit.texture) .. " z " .. tostring(hit.z))
+		SurfaceScan.rememberSurfaceHit(sq, hit)
+		log("getSurfaceHit cache hit " .. tostring(hit.texture) .. " z " .. tostring(hit.z))
 	end
 	return hit
 end
@@ -187,14 +219,14 @@ function SurfaceScan.scanRoomForSurfaces(room, opts)
 	)
 
 	-- Decide if an object on a square qualifies as a placable surface.
-	local function consider(obj, sq)
-		if not obj or not obj.getTextureName then
-			return nil
-		end
-		local tex = obj:getTextureName()
-		if not _isWhitelisted(tex, wl) then
-			return nil
-		end
+		local function consider(obj, sq)
+			if not obj then
+				return nil
+			end
+			local tex = getSpriteRef(obj)
+			if not _isWhitelisted(tex, wl) then
+				return nil
+			end
 		local z = surfaceZ(obj)
 		if not z or z < minZ then
 			return nil
@@ -238,6 +270,11 @@ function SurfaceScan.getDefaults()
 		whitelist = DEFAULT_WHITELIST,
 		minSurface = DEFAULT_MIN_SURF,
 	}
+end
+
+function SurfaceScan.clearCache()
+	surfaceHitByKey = {}
+	surfaceHitKeyOrder = {}
 end
 
 return SurfaceScan

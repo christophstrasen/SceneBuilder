@@ -59,6 +59,7 @@
 │           │   ├── media
 │           │   │   └── lua
 │           │   │       └── shared
+│           │   │           ├── SceneBuilder.lua
 │           │   │           └── SceneBuilder
 │           │   │               ├── core.lua
 │           │   │               ├── lifecycle.lua
@@ -75,7 +76,6 @@
 │           │   │               │   ├── init.lua
 │           │   │               │   └── surfaces.lua
 │           │   │               ├── resolvers.lua
-│           │   │               ├── SceneBuilder.lua
 │           │   │               ├── SpritesSurfaceDimensions_polyfill.lua
 │           │   │               ├── surface_scan.lua
 │           │   │               └── util.lua

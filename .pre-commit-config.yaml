@@ -1,0 +1,14 @@
+repos:
+  - repo: local
+    hooks:
+      - id: luacheck
+        name: Run luacheck
+        entry: luacheck Contents/mods/SceneBuilder/42/media/lua/shared/SceneBuilder Contents/mods/SceneBuilder/42/media/lua/shared/SceneBuilder.lua
+        language: system
+        pass_filenames: false
+      - id: busted-tests
+        name: Run busted tests
+        entry: busted tests/unit
+        language: system
+        pass_filenames: false
+

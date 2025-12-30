@@ -26,16 +26,12 @@ function U.asStringList(value, default_list)
 		end
 	end
 
-	if value == nil then
-	-- nothing
-	elseif type(value) == "string" then
+	if type(value) == "string" then
 		addOne(value)
 	elseif type(value) == "table" then
 		for i = 1, #value do
 			addOne(value[i])
 		end
-	else
-		-- ignore other types
 	end
 
 	if #out > 0 then
@@ -173,9 +169,13 @@ end
 --- @param ... any
 --- @return string
 function U.buildKey(...)
-	local t = { ... }
-	for i = 1, #t do
-		local v = t[i]
+	-- NOTE: We intentionally avoid `{...}` + `#t` here:
+	-- - Lua sequences stop at the first nil; `#t` becomes wrong when any argument is nil.
+	-- - SceneBuilder uses this for deterministic keys/hashes; silently dropping segments would break idempotence.
+	local n = select("#", ...)
+	local t = {}
+	for i = 1, n do
+		local v = select(i, ...)
 		if v == nil then
 			t[i] = "∅"
 		elseif type(v) == "table" then

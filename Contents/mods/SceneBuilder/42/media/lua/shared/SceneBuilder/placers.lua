@@ -214,6 +214,10 @@ local function mkItem(t)
 		log("mkItem no script name from " .. tostring(t))
 		return nil
 	end
+	if type(instanceItem) ~= "function" then
+		log("mkItem instanceItem missing")
+		return nil
+	end
 	log("mkItem Creating item " .. tostring(typeName))
 	local it = instanceItem(typeName)
 	if not it then
@@ -249,11 +253,26 @@ local function _pickXYInBox(box, pad, defBox)
 	local minY = minYp / 100.0
 	local maxY = maxYp / 100.0
 
-	-- pick random in [min,max] (ZombRandFloat is reliable here)
-	local rx = ZombRandFloat and ZombRandFloat(minX, maxX)
-		or (ZombRand(math.floor((maxX - minX) * 10000)) / 10000.0 + minX)
-	local ry = ZombRandFloat and ZombRandFloat(minY, maxY)
-		or (ZombRand(math.floor((maxY - minY) * 10000)) / 10000.0 + minY)
+	-- pick random in [min,max] (guard 0-span to avoid ZombRand(0))
+	local function randRange(a, b)
+		if not (b and a) or b <= a then
+			return a or 0
+		end
+		if ZombRandFloat then
+			return ZombRandFloat(a, b)
+		end
+		if type(ZombRand) ~= "function" then
+			return a
+		end
+		local span = b - a
+		local steps = math.floor(span * 10000)
+		if steps < 1 then
+			return a
+		end
+		return (ZombRand(steps) / 10000.0) + a
+	end
+	local rx = randRange(minX, maxX)
+	local ry = randRange(minY, maxY)
 
 	-- paranoia clamp
 	if rx < minX then
@@ -521,9 +540,20 @@ local function placeCorpse(state, roomDef, spec, sqOverride)
 		log("PlaceCorpse invalid outfit non-string using default " .. getDefaultCorpseOutfit())
 	end
 
-	local dir = IsoDirections.getRandom()
+	if not (RandomizedWorldBase and type(RandomizedWorldBase.createRandomDeadBody) == "function") then
+		log("placeCorpse missing RandomizedWorldBase.createRandomDeadBody so skipping corpse")
+		return {}, sq
+	end
+
+	local dir = IsoDirections and IsoDirections.getRandom and IsoDirections.getRandom() or nil
+	if not dir and IsoDirections and IsoDirections.N then
+		dir = IsoDirections.N
+	end
+
 	local corpse = RandomizedWorldBase.createRandomDeadBody(sq, dir, bruising, crawlerChance, outfit)
-	addBloodSplat(sq, floor_splats)
+	if type(addBloodSplat) == "function" then
+		addBloodSplat(sq, floor_splats)
+	end
 
 	if corpse and corpse.getContainer then
 		Lifecycle.tagAndRegister(corpse, state.tag)
@@ -659,7 +689,8 @@ local function placeScatter(state, roomDef, spec, sqOverride)
 
 	local entries = {}
 	for _, t in ipairs(rawItems) do
-		local tn, q = nil, 1
+		local tn
+		local q = 1
 		if type(t) == "table" then
 			tn = normType(t[1] or t.item or t.type or t.name)
 			q = tonumber(t[2]) or tonumber(t.qty) or 1
@@ -697,7 +728,7 @@ local function placeScatter(state, roomDef, spec, sqOverride)
 	end
 
 	log(
-		("[Scatter] Begin: K=%d  pool=%s  entries=%d  count=%d"):format(
+		("[Scatter] Begin K=%d  pool=%s  entries=%d  count=%d"):format(
 			k,
 			tostring(pool and #pool or 0),
 			#entries,
@@ -771,7 +802,7 @@ local function placeScatter(state, roomDef, spec, sqOverride)
 		end
 	end
 
-	log(("[Scatter] Finished: spawned %d world items"):format(#results))
+	log(("[Scatter] Finished spawned %d world items"):format(#results))
 	return results, nil
 end
 

@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Lua 5.1
+        uses: leafo/gh-actions-lua@v11
+        with:
+          luaVersion: "5.1"
+
+      - name: Set up LuaRocks
+        uses: leafo/gh-actions-luarocks@v4
+
+      - name: Install tools
+        run: |
+          luarocks install luacheck
+          luarocks install busted
+
+      - name: Lint (luacheck)
+        run: |
+          luacheck Contents/mods/SceneBuilder/42/media/lua/shared/SceneBuilder Contents/mods/SceneBuilder/42/media/lua/shared/SceneBuilder.lua
+
+      - name: Run SceneBuilder unit tests
+        run: |
+          busted tests/unit
+

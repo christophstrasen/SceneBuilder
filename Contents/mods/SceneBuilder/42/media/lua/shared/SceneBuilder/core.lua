@@ -190,7 +190,7 @@ function Scene:begin(roomDef, opts)
 		end
 		-- (optional) tiny log to confirm effective K
 		log(
-			"place: strategy="
+			"place strategy="
 				.. tostring(p.strategy)
 				.. " K="
 				.. tostring(p.maxPlacementSquares)
@@ -342,7 +342,11 @@ function Scene:begin(roomDef, opts)
 			log("outfit(name) expects string; got " .. tostring(name) .. " — using default " .. DEFAULT_OUTFIT)
 			state.current.outfit = DEFAULT_OUTFIT
 		else
-			state.current.outfit = name:match("^%s*(.-)%s*$")
+			local trimmed = name:match("^%s*(.-)%s*$")
+			if trimmed == "" then
+				trimmed = DEFAULT_OUTFIT
+			end
+			state.current.outfit = trimmed
 		end
 
 		return api
@@ -410,7 +414,7 @@ function Scene:begin(roomDef, opts)
 	function api:spawnNow()
 		enqueueCurrent()
 		if #state.queue == 0 then
-			log("placeNow called with empty queue")
+			log("spawnNow called with empty queue")
 			return api
 		end
 		local last = table.remove(state.queue) -- pop, don't keep

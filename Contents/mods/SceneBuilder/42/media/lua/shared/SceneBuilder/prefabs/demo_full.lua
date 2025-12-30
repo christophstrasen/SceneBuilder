@@ -9,6 +9,10 @@ Example prefab (anchors variant), staying close to current demo style
 - Build 42 friendly; no shared/client/server in require paths
 ------------------------------------------------------------- ]]
 
+local U = require("SceneBuilder/util")
+local LOG_TAG = "SceneBuilder prefab/demo_full"
+local log = U.makeLogger(LOG_TAG)
+
 local Demo = {}
 
 --- Public entrypoint: prefab does its work for a given roomDef.
@@ -87,11 +91,11 @@ function Demo.makeForRoomDef(roomDef)
 			:where("tables_and_counters")
 		end)
 		:spawn()
-	print("Prefab demo_full makeForRoomDef ran for " .. tostring(roomDef and roomDef:getName()))
+	log("Prefab demo_full makeForRoomDef ran for " .. tostring(roomDef and roomDef:getName()))
 end
 -- stylua: ignore end
 
-return Demo 
+return Demo
 
 --[[
 -- testing and usage via console

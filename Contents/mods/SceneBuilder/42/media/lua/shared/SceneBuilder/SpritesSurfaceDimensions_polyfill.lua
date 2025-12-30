@@ -61,6 +61,7 @@ local log = U.makeLogger(LOG_TAG)
 local assertf = U.assertf
 local _pinned = false
 local _merged_handle = nil -- merged copy or Polyfill itself
+local _notifiedInvalidSpriteDimensions = false
 local _notifiedPatternMatch = {} -- file-scope (top-level) small set
 
 log("SpritesSurfaceDimensions_polyfill.lua starting")
@@ -241,7 +242,7 @@ local function ensureMerged()
 		return
 	end
 
-	local real = _G and _G.SpriteDimensions or rawget(_G or {}, "SpriteDimensions")
+	local real = rawget(_G or {}, "SpriteDimensions")
 	if validateSpriteDimensions(real) then
 		local merged, stats = makeMerged(real)
 		_merged_handle = merged
@@ -250,11 +251,11 @@ local function ensureMerged()
 		return
 	end
 
-	if real ~= nil then
+	if real ~= nil and not _notifiedInvalidSpriteDimensions then
 		U.logCtx(LOG_TAG, "invalid SpriteDimensions", { type = type(real) })
+		_notifiedInvalidSpriteDimensions = true
 	end
 	_merged_handle = SpriteDimensionsPolyfill
-	_pinned = true
 end
 
 local function resolved()

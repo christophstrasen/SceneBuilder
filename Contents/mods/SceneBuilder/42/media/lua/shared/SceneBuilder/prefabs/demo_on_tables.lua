@@ -1,3 +1,7 @@
+local U = require("SceneBuilder/util")
+local LOG_TAG = "SceneBuilder prefab/demo_on_tables"
+local log = U.makeLogger(LOG_TAG)
+
 local Demo = {}
 
 --- Public entrypoint: prefab does its work for a given roomDef.
@@ -22,7 +26,7 @@ function Demo.makeForRoomDef(roomDef)
 			:where("tables_and_counters")
 		end)
 		:spawn()
-	print("Prefab demo_on_tables makeForRoomDef ran for " .. tostring(roomDef and roomDef:getName()))
+	log("Prefab demo_on_tables makeForRoomDef ran for " .. tostring(roomDef and roomDef:getName()))
 end
 
 -- stylua: ignore end
