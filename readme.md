@@ -6,8 +6,6 @@ _A scene composition framework for Project Zomboid (Build 42), Single Player_
 
 [Steam Workshop → SceneBuilder [b42]](https://steamcommunity.com/sharedfiles/filedetails/?id=3594105442)
 
-> Do **not** copy this repo into your mod but use it as a required dependency instead.
-
 ---
 
 SceneBuilder lets modders **spawn in-world scenes** in a **declarative** fashion — corpses, containers, clutter, blood, and more — using a Lua DSL.  
