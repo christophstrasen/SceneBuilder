@@ -14,10 +14,10 @@ local function getSpriteRef(obj)
 	if not obj then
 		return nil
 	end
-	if obj.getSpriteName then
+	if type(obj.getSpriteName) == "function" then
 		return obj:getSpriteName()
 	end
-	if obj.getTextureName then
+	if type(obj.getTextureName) == "function" then
 		return obj:getTextureName()
 	end
 	return nil
@@ -39,16 +39,137 @@ end
 -- Indicates top-surface height in pixels; nil means not a placable object.
 --- @return number|nil
 local function surfaceZ(obj)
-	local sp = obj and obj:getSprite()
-	if not sp then
+	if not obj or type(obj.getSprite) ~= "function" then
 		return nil
 	end
-	local props = sp:getProperties()
-	if not props then
+	local okSprite, sp = pcall(obj.getSprite, obj)
+	if not okSprite or not sp then
 		return nil
 	end
-	local v = props:Val("Surface")
+	if type(sp.getProperties) ~= "function" then
+		return nil
+	end
+	local okProps, props = pcall(sp.getProperties, sp)
+	if not okProps or not props then
+		return nil
+	end
+	if type(props.Val) ~= "function" then
+		return nil
+	end
+	local okVal, v = pcall(props.Val, props, "Surface")
+	if not okVal then
+		return nil
+	end
 	return v and tonumber(v) or nil
+end
+
+-- Diagnostic logging for Surface property discovery (Build 42 changes can affect this).
+-- Logs once per spriteRef + stage when we fail to reach properties/Val("Surface"), and once when we succeed.
+-- Kept bounded to avoid spamming logs in large rooms.
+do
+	-- Keep a reference so luacheck doesn't treat the initial definition as dead code.
+	local _surfaceZ = surfaceZ
+	local SURFACE_Z_LOG_MAX = 256
+	local seen = {}
+	local order = {}
+
+	local function safeLogValue(v)
+		-- Avoid colon to prevent truncation in B42 logs.
+		return tostring(v):gsub(":", ";")
+	end
+
+	local function logOnce(key, msg, ctx)
+		if seen[key] then
+			return
+		end
+		seen[key] = true
+		order[#order + 1] = key
+		if #order > SURFACE_Z_LOG_MAX then
+			local oldKey = table.remove(order, 1)
+			if oldKey then
+				seen[oldKey] = nil
+			end
+		end
+		U.logCtx(LOG_TAG, msg, ctx)
+	end
+
+	local function surfaceZLogged(obj)
+		local spriteRef = getSpriteRef(obj) or "<unknown>"
+
+		if not obj or type(obj.getSprite) ~= "function" then
+			logOnce("noGetSprite|" .. spriteRef, "surfaceZ missing getSprite", { sprite = spriteRef })
+			return nil
+		end
+
+		local okSprite, spOrErr = pcall(obj.getSprite, obj)
+		if not okSprite then
+			logOnce("getSpriteErr|" .. spriteRef, "surfaceZ getSprite failed", {
+				sprite = spriteRef,
+				err = safeLogValue(spOrErr),
+			})
+			return nil
+		end
+		local sp = spOrErr
+		if not sp then
+			logOnce("noSprite|" .. spriteRef, "surfaceZ getSprite returned nil", { sprite = spriteRef })
+			return nil
+		end
+
+		if type(sp.getProperties) ~= "function" then
+			logOnce("noGetProperties|" .. spriteRef, "surfaceZ missing getProperties", { sprite = spriteRef })
+			return nil
+		end
+
+		local okProps, propsOrErr = pcall(sp.getProperties, sp)
+		if not okProps then
+			logOnce("getPropertiesErr|" .. spriteRef, "surfaceZ getProperties failed", {
+				sprite = spriteRef,
+				err = safeLogValue(propsOrErr),
+			})
+			return nil
+		end
+		local props = propsOrErr
+		if not props then
+			logOnce("noProperties|" .. spriteRef, "surfaceZ getProperties returned nil", { sprite = spriteRef })
+			return nil
+		end
+
+		if type(props.Val) ~= "function" then
+			logOnce("noValFn|" .. spriteRef, "surfaceZ missing properties Val", { sprite = spriteRef })
+			return nil
+		end
+
+		local okVal, vOrErr = pcall(props.Val, props, "Surface")
+		if not okVal then
+			logOnce("valErr|" .. spriteRef, "surfaceZ properties Val Surface failed", {
+				sprite = spriteRef,
+				err = safeLogValue(vOrErr),
+			})
+			return nil
+		end
+
+		if vOrErr == nil then
+			logOnce("noSurface|" .. spriteRef, "surfaceZ missing Surface", { sprite = spriteRef })
+			return nil
+		end
+
+		local n = tonumber(vOrErr)
+		if n == nil then
+			logOnce("badSurface|" .. spriteRef, "surfaceZ Surface not numeric", {
+				sprite = spriteRef,
+				surface = safeLogValue(vOrErr),
+			})
+			return nil
+		end
+
+		logOnce("surfaceOk|" .. spriteRef, "surfaceZ got Surface", {
+			sprite = spriteRef,
+			surface = safeLogValue(vOrErr),
+		})
+		return n
+	end
+
+	surfaceZ = surfaceZLogged
 end
 
 --- Resolve whitelist and min surface consistently across all functions.

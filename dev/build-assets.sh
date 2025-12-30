@@ -58,6 +58,17 @@ export_svg_png() {
     return 1
   fi
 
+  # Skip regeneration when the output is newer than the source SVG.
+  # This prevents watch scripts from self-triggering loops on every sync.
+  if [ "${FORCE_ASSETS:-0}" != "1" ] && [ -f "$out" ] && [ "$out" -nt "$svg" ]; then
+    if check_png_plausible "$out" "$min_bytes"; then
+      if [ "${VERBOSE:-0}" = "1" ]; then
+        echo "[assets skip] $out"
+      fi
+      return 0
+    fi
+  fi
+
   inkscape "$svg" \
     --export-type=png \
     --export-filename="$out" \
@@ -72,4 +83,3 @@ export_svg_png "256.svg" "preview.png" 256 256 1000
 export_svg_png "64.svg" "Contents/mods/$MOD_ID/42/icon_64.png" 64 64 400
 
 echo -e "${GREEN}[assets ok]${RESET}"
-

@@ -65,13 +65,23 @@ if command -v inotifywait >/dev/null; then
     echo "Note: edits outside these paths will not trigger a sync."
   fi
 
-  inotifywait -m -q -r -e close_write,modify,attrib,create,delete,move \
+  # Avoid `attrib` events: some tooling updates atime/metadata on read, which can self-trigger loops.
+  # Avoid `modify` events: they can fire many times during a single save; `close_write`/`move` is enough.
+  inotifywait -m -q -r -e close_write,create,delete,move \
     --format '%w%f' \
     "${WATCH_PATHS[@]}" 2>/dev/null |
     while IFS= read -r _path; do
       if [ "${VERBOSE:-0}" = "1" ]; then
         echo "[change] $_path"
       fi
+
+      # Coalesce short bursts of file events into a single sync run.
+      while IFS= read -r -t 0.1 _path; do
+        if [ "${VERBOSE:-0}" = "1" ]; then
+          echo "[change] $_path"
+        fi
+      done
+
       sync_once
     done
 else
@@ -86,4 +96,3 @@ else
     fi
   done
 fi
-

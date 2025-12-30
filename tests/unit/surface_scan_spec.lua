@@ -24,6 +24,15 @@ describe("SceneBuilder surface scan", function()
 	it("prefers getSpriteName and matches whitelist case-insensitively", function()
 		local SurfaceScan = require("SceneBuilder/surface_scan")
 
+		-- Regression coverage:
+		-- some IsoObject-like instances returned by sq:getObjects() in newer B42 builds
+		-- appear to not implement getSprite(), which previously crashed surfaceZ().
+		local weirdObjWithoutSprite = {
+			getSpriteName = function()
+				return "Weird_Object_NoSprite"
+			end,
+		}
+
 		local obj = {
 			getSpriteName = function()
 				return "Furniture_Tables_High_01_6"
@@ -49,7 +58,7 @@ describe("SceneBuilder surface scan", function()
 
 		local square = {
 			getObjects = function()
-				return makeList({ obj })
+				return makeList({ weirdObjWithoutSprite, obj })
 			end,
 			getX = function()
 				return 10
