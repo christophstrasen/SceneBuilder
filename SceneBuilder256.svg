@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--?xml version="1.0" encoding="UTF-8" standalone="no"?-->
+
+<svg
+   width="256"
+   height="256"
+   viewBox="0 0 256 256"
+   version="1.1"
+   id="svg3"
+   sodipodi:docname="SceneBuilder256.svg"
+   inkscape:version="1.4.2 (ebf0e940d0, 2025-05-08)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview3"
+     pagecolor="#505050"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#505050"
+     inkscape:zoom="1.6894531"
+     inkscape:cx="252.74451"
+     inkscape:cy="277.90058"
+     inkscape:window-width="2354"
+     inkscape:window-height="2106"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg3" />
+  <!-- Background -->
+  <rect
+     x="0"
+     y="0"
+     width="512"
+     height="512"
+     fill="#0f2a4a"
+     id="rect1"
+     inkscape:label="bg" />
+  <!-- Grid pattern -->
+  <defs
+     id="defs1">
+    <pattern
+       inkscape:collect="always"
+       xlink:href="#grid"
+       id="pattern15"
+       patternTransform="scale(1)" />
+    <pattern
+       id="grid"
+       width="32"
+       height="32"
+       patternUnits="userSpaceOnUse">
+      <path
+         d="M 32 0 L 0 0 0 32"
+         fill="none"
+         stroke="#1f3f66"
+         stroke-width="1"
+         id="path1" />
+    </pattern>
+  </defs>
+  <rect
+     x="0"
+     y="0"
+     width="512"
+     height="512"
+     fill="url(#grid)"
+     id="rect2"
+     inkscape:label="grid"
+     style="fill:url(#pattern15)" />
+  <!-- Text -->
+  <text
+     x="131.69942"
+     y="109.99768"
+     text-anchor="middle"
+     font-size="64px"
+     font-family="Inter, Roboto, Helvetica, Arial, sans-serif"
+     font-weight="600"
+     fill="#ffffff"
+     id="text3"
+     inkscape:label="text"
+     style="font-size:48px"><tspan
+       sodipodi:role="line"
+       id="tspan8"
+       x="131.69942"
+       y="109.99768"
+       style="font-size:48px">Scene</tspan><tspan
+       sodipodi:role="line"
+       id="tspan9"
+       x="131.69942"
+       y="169.99768"
+       style="font-size:48px">Builder</tspan></text>
+</svg>
