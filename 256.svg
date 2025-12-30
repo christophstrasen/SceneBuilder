@@ -2,12 +2,12 @@
 <!--?xml version="1.0" encoding="UTF-8" standalone="no"?-->
 
 <svg
-   width="64"
-   height="64"
-   viewBox="0 0 64 64"
+   width="256"
+   height="256"
+   viewBox="0 0 256 256"
    version="1.1"
    id="svg3"
-   sodipodi:docname="SceneBuilder64.svg"
+   sodipodi:docname="256.svg"
    inkscape:version="1.4.2 (ebf0e940d0, 2025-05-08)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
@@ -23,9 +23,9 @@
      inkscape:pageopacity="0"
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#505050"
-     inkscape:zoom="2.3892475"
-     inkscape:cx="184.78621"
-     inkscape:cy="201.10934"
+     inkscape:zoom="1.6894531"
+     inkscape:cx="252.74451"
+     inkscape:cy="277.90058"
      inkscape:window-width="2354"
      inkscape:window-height="2106"
      inkscape:window-x="0"
@@ -73,8 +73,8 @@
      style="fill:url(#pattern15)" />
   <!-- Text -->
   <text
-     x="32.923546"
-     y="43.030991"
+     x="131.69942"
+     y="109.99768"
      text-anchor="middle"
      font-size="64px"
      font-family="Inter, Roboto, Helvetica, Arial, sans-serif"
@@ -82,10 +82,15 @@
      fill="#ffffff"
      id="text3"
      inkscape:label="text"
-     style="font-size:32px"><tspan
+     style="font-size:48px"><tspan
+       sodipodi:role="line"
+       id="tspan8"
+       x="131.69942"
+       y="109.99768"
+       style="font-size:48px">Scene</tspan><tspan
        sodipodi:role="line"
        id="tspan9"
-       x="32.923546"
-       y="43.030991"
-       style="font-size:32px">SB</tspan></text>
+       x="131.69942"
+       y="169.99768"
+       style="font-size:48px">Builder</tspan></text>
 </svg>

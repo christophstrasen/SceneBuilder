@@ -2,15 +2,16 @@
 <!--?xml version="1.0" encoding="UTF-8" standalone="no"?-->
 
 <svg
-   width="512"
-   height="512"
-   viewBox="0 0 512 512"
+   width="64"
+   height="64"
+   viewBox="0 0 64 64"
    version="1.1"
    id="svg3"
-   sodipodi:docname="SceneBuilder512.svg"
+   sodipodi:docname="64.svg"
    inkscape:version="1.4.2 (ebf0e940d0, 2025-05-08)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg">
   <sodipodi:namedview
@@ -22,10 +23,10 @@
      inkscape:pageopacity="0"
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#505050"
-     inkscape:zoom="1.6894531"
-     inkscape:cx="252.74451"
-     inkscape:cy="277.90058"
-     inkscape:window-width="2419"
+     inkscape:zoom="2.3892475"
+     inkscape:cx="184.78621"
+     inkscape:cy="201.10934"
+     inkscape:window-width="2354"
      inkscape:window-height="2106"
      inkscape:window-x="0"
      inkscape:window-y="0"
@@ -43,6 +44,11 @@
   <!-- Grid pattern -->
   <defs
      id="defs1">
+    <pattern
+       inkscape:collect="always"
+       xlink:href="#grid"
+       id="pattern15"
+       patternTransform="scale(1)" />
     <pattern
        id="grid"
        width="32"
@@ -63,24 +69,23 @@
      height="512"
      fill="url(#grid)"
      id="rect2"
-     inkscape:label="grid" />
+     inkscape:label="grid"
+     style="fill:url(#pattern15)" />
   <!-- Text -->
   <text
-     x="257.18381"
-     y="237.2578"
+     x="32.923546"
+     y="43.030991"
      text-anchor="middle"
      font-size="64px"
      font-family="Inter, Roboto, Helvetica, Arial, sans-serif"
      font-weight="600"
      fill="#ffffff"
      id="text3"
-     inkscape:label="text"><tspan
-       sodipodi:role="line"
-       id="tspan8"
-       x="257.18381"
-       y="237.2578">Scene</tspan><tspan
+     inkscape:label="text"
+     style="font-size:32px"><tspan
        sodipodi:role="line"
        id="tspan9"
-       x="257.18381"
-       y="317.25781">Builder</tspan></text>
+       x="32.923546"
+       y="43.030991"
+       style="font-size:32px">SB</tspan></text>
 </svg>
