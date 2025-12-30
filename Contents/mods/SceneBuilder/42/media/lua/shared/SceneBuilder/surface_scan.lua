@@ -33,18 +33,6 @@ end
 --- @field reference? string
 --- @field square_padding? number
 
--- Extract surface height in pixels from the object (Build 42).
--- We intentionally rely on the engine-provided method to avoid brittle sprite-property heuristics.
---- @return number|nil
-local function surfaceZ(obj)
-	if not obj or type(obj.getSurfaceOffsetNoTable) ~= "function" then
-		return nil
-	end
-	local ok, v = pcall(obj.getSurfaceOffsetNoTable, obj)
-	local n = ok and tonumber(v) or nil
-	return (n and n > 0) and n or nil
-end
-
 --- @return number
 local function _getMinSurfaceHeight(opts)
 	local v = opts and opts.minSurfaceHeight
@@ -87,7 +75,12 @@ local function _probeSquareForSurface(sq, opts)
 	for i = 0, objs:size() - 1 do
 		local obj = objs:get(i)
 		if obj then
-			local z = surfaceZ(obj)
+			local z = nil
+			if type(obj.getSurfaceOffsetNoTable) == "function" then
+				local ok, v = pcall(obj.getSurfaceOffsetNoTable, obj)
+				local n = ok and tonumber(v) or nil
+				z = (n and n > 0) and n or nil
+			end
 			if z and z >= minZ and z > bestZ then
 				bestZ = z
 				best = { sq = sq, z = z, obj = obj, texture = getSpriteRef(obj) or "" }
@@ -109,13 +102,13 @@ local function _probeSquareForSurface(sq, opts)
 	return best
 end
 
-	--- Remembers a surface hit for a given IsoGridSquare.
-	--- Safe to call repeatedly; the newest hit overwrites any previous one.
-	---
-	--- @param sq IsoGridSquare   The square associated with the surface hit.
-	--- @param hit SceneBuilder.SurfaceHit|nil
-	--- @return nil
-	function SurfaceScan.rememberSurfaceHit(sq, hit)
+--- Remembers a surface hit for a given IsoGridSquare.
+--- Safe to call repeatedly; the newest hit overwrites any previous one.
+---
+--- @param sq IsoGridSquare   The square associated with the surface hit.
+--- @param hit SceneBuilder.SurfaceHit|nil
+--- @return nil
+function SurfaceScan.rememberSurfaceHit(sq, hit)
 	if not sq or not hit then
 		return
 	end
@@ -172,12 +165,7 @@ function SurfaceScan.scanRoomForSurfaces(room, opts)
 		return out
 	end
 
-	log(
-		"scanRoomForSurfaces scan start minZ "
-			.. tostring(minZ)
-			.. " lim "
-			.. tostring(limit or 0)
-	)
+	log("scanRoomForSurfaces scan start minZ " .. tostring(minZ) .. " lim " .. tostring(limit or 0))
 
 	for i = 0, squares:size() - 1 do
 		local sq = squares:get(i)

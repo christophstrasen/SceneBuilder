@@ -1,20 +1,24 @@
 version=1
-title=SceneBuilder
-description=SceneBuilder - A Scene Authoring Library for Project Zomboid (Build 42)
+title=[42SP] SceneBuilder
+description=SceneBuilder - Scene authoring library for Project Zomboid (Build 42)
 
-SceneBuilder is a developer library intended for experienced modders.
-It provides tools for declarative scene construction, prefab authoring,
-and surface-aware object placement inside the world.
+NOT TESTED IN MULTIPLAYER. DON'T USE THERE. YOU HAVE BEEN WARNED. thx.
 
-This is not gameplay content. It does nothing on its own.
-You are expected to understand Project Zomboid's Lua modding and programming concepts.
+SceneBuilder is a scene composition framework for mid-level Lua mod developers.
+It lets you spawn coherent in-world scenes in a declarative way (corpses, containers,
+clutter, blood, and more), using anchors, resolvers, and composable placers.
 
-For documentation, source code, and examples, visit:
+Highlights:
+- surface-aware item placement
+- deterministic scenes by default (same inputs yield the same layout)
+- extensible via custom resolvers and spawn hooks
+
+This is a developer library, not gameplay content. It does nothing on its own.
+
+GitHub (docs, source, examples):
 https://github.com/christophstrasen/SceneBuilder
 
-PRs and issues welcome on Github.
-
-Recommended mod to pair with for more visually accurate surface placement:
+Recommended (optional) for more accurate surface X/Y presets:
 - ItemStories [b42] https://steamcommunity.com/sharedfiles/filedetails/?id=3569303590
 
 tags=Library;Utility;Build 42;Development
