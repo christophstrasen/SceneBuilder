@@ -6,4 +6,5 @@ poster=poster.png
 icon=icon_64.png
 authors=Karmachameleon
 version=0.1
+require=\DREAMBase
 loadModAfer=\ItemStoriesB42
