@@ -33,3 +33,41 @@ describe("SceneBuilder resolvers normalization", function()
 		assert.is_true(p.respect_strategy)
 	end)
 end)
+
+describe("SceneBuilder surfaces resolver", function()
+	it("returns only squares flagged IsTable", function()
+		local Registry = require("SceneBuilder/registry")
+		local captured = {}
+		Registry.bind({
+			registerResolver = function(name, fn)
+				captured[name] = fn
+			end,
+		})
+
+		require("SceneBuilder/resolvers/surfaces")
+
+		local fn = captured.tables_and_counters
+		assert.is_truthy(fn)
+
+		local function makeList(items)
+			return {
+				_items = items,
+				size = function(self)
+					return #self._items
+				end,
+				get = function(self, idx0)
+					return self._items[idx0 + 1]
+				end,
+			}
+		end
+
+		local sqNo = { has = function() return false end }
+		local sqYes = { has = function(_, flag) return flag == "IsTable" end }
+		local room = { getSquares = function() return makeList({ sqNo, sqYes }) end }
+		local roomDef = { getIsoRoom = function() return room end }
+
+		local pool = fn(roomDef, { strategy = "tables_and_counters", limit = 16 })
+		assert.equals(1, #pool)
+		assert.is_true(pool[1] == sqYes)
+	end)
+end)

@@ -21,44 +21,43 @@ describe("SceneBuilder surface scan", function()
 		}
 	end
 
-	it("prefers getSpriteName and matches whitelist case-insensitively", function()
+	it("scans only squares flagged IsTable", function()
 		local SurfaceScan = require("SceneBuilder/surface_scan")
-
-		-- Regression coverage:
-		-- some IsoObject-like instances returned by sq:getObjects() in newer B42 builds
-		-- appear to not implement getSprite(), which previously crashed surfaceZ().
-		local weirdObjWithoutSprite = {
-			getSpriteName = function()
-				return "Weird_Object_NoSprite"
-			end,
-		}
 
 		local obj = {
 			getSpriteName = function()
 				return "Furniture_Tables_High_01_6"
 			end,
-			getTextureName = function()
-				error("getTextureName should not be used when getSpriteName exists")
-			end,
-			getSprite = function()
-				return {
-					getProperties = function()
-						return {
-							Val = function(_, key)
-								if key == "Surface" then
-									return "20"
-								end
-								return nil
-							end,
-						}
-					end,
-				}
+			-- Build 42 preferred path for surface-aware placement.
+			getSurfaceOffsetNoTable = function()
+				return 30
 			end,
 		}
 
-		local square = {
+		local squareNoTableFlag = {
 			getObjects = function()
-				return makeList({ weirdObjWithoutSprite, obj })
+				return makeList({ obj })
+			end,
+			has = function(_, _flag)
+				return false
+			end,
+			getX = function()
+				return 10
+			end,
+			getY = function()
+				return 20
+			end,
+			getZ = function()
+				return 0
+			end,
+		}
+
+		local squareIsTable = {
+			getObjects = function()
+				return makeList({ obj })
+			end,
+			has = function(_, flag)
+				return flag == "IsTable"
 			end,
 			getX = function()
 				return 10
@@ -73,17 +72,16 @@ describe("SceneBuilder surface scan", function()
 
 		local room = {
 			getSquares = function()
-				return makeList({ square })
+				return makeList({ squareNoTableFlag, squareIsTable })
 			end,
 		}
 
 		local hits = SurfaceScan.scanRoomForSurfaces(room, {
-			whitelist = { "TABLE" },
 			minSurfaceHeight = 10,
 		})
 
 		assert.equals(1, #hits)
 		assert.equals("Furniture_Tables_High_01_6", hits[1].texture)
-		assert.equals(20, hits[1].z)
+		assert.equals(30, hits[1].z)
 	end)
 end)
