@@ -13,7 +13,7 @@ Watch + deploy (default: Workshop wrapper under `~/Zomboid/Workshop`):
 ./dev/watch.sh
 ```
 
-Switch destination:
+Optional: deploy to `~/Zomboid/mods` instead:
 
 ```bash
 TARGET=mods ./dev/watch.sh
@@ -23,4 +23,3 @@ TARGET=mods ./dev/watch.sh
 
 - This repo already shipped to Workshop; `Contents/mods/SceneBuilder/42/mod.info` is considered published surface.
 - The mod payload is under `Contents/mods/SceneBuilder/`.
-
