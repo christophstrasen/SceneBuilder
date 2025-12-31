@@ -1,6 +1,6 @@
 -- Scans a RoomDef for squares containing furniture surfaces suitable for item placement.
 -- Returns { { sq=IsoGridSquare, z=number, obj=IsoObject, texture=string }, ... }
-local U = require("SceneBuilder/util") -- for U.log/U.assertf
+local U = require("DREAMBase/util") -- for U.log/U.assertf
 local LOG_TAG = "SceneBuilder surface_scan"
 local log = U.makeLogger(LOG_TAG)
 

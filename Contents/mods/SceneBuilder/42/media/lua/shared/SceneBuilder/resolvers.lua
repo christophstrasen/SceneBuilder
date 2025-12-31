@@ -13,7 +13,7 @@
 ---   • Strategy fallback (place.fallback) is a Resolvers policy.
 ---   • Proximity fallback is handled elsewhere (_applyProximityPass).
 
-local U = require("SceneBuilder/util")
+local U = require("DREAMBase/util")
 local LOG_TAG = "SceneBuilder Resolvers"
 local log = U.makeLogger(LOG_TAG)
 local assertf = U.assertf

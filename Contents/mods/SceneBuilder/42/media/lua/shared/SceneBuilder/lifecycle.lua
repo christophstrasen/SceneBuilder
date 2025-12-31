@@ -1,7 +1,7 @@
 -- SceneBuilder/lifecycle.lua
 -- Attention! Currently lifecycle is not used
 
-local U = require("SceneBuilder/util")
+local U = require("DREAMBase/util")
 local LOG_TAG = "SceneBuilder Lifecycle"
 local log = U.makeLogger(LOG_TAG)
 local assertf = U.assertf

@@ -2,7 +2,7 @@
 -- Minimal showcase for anchor proximity, respect_strategy, and fallback.
 -- Stand in a room with a desk/table and run the console snippet at bottom.
 
-local U = require("SceneBuilder/util")
+local U = require("DREAMBase/util")
 local LOG_TAG = "SceneBuilder prefab/demo_proximity"
 local log = U.makeLogger(LOG_TAG)
 

@@ -55,7 +55,7 @@ SpriteDimensionsPolyfill = SpriteDimensionsPolyfill or {} ---@type SpriteDimensi
 -- ============================================================================
 -- Internal state (lazy merge + pin)
 -- ============================================================================
-local U = require("SceneBuilder/util")
+local U = require("DREAMBase/util")
 local LOG_TAG = "SpriteDimensionsPolyfill"
 local log = U.makeLogger(LOG_TAG)
 local assertf = U.assertf

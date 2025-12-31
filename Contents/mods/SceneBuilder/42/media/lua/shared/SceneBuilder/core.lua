@@ -3,7 +3,7 @@
 local SceneBuilder = SceneBuilder or {} -- gets exported at the bottom
 local Scene = SceneBuilder -- alias so the rest of the file stays unchanged
 
-local U = require("SceneBuilder/util")
+local U = require("DREAMBase/util")
 local LOG_TAG = "SceneBuilder Core"
 local log = U.makeLogger(LOG_TAG)
 local assertf = U.assertf

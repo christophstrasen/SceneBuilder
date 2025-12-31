@@ -1,4 +1,4 @@
-local U = require("SceneBuilder/util")
+local U = require("DREAMBase/util")
 local LOG_TAG = "SceneBuilder prefab/demo_on_tables"
 local log = U.makeLogger(LOG_TAG)
 

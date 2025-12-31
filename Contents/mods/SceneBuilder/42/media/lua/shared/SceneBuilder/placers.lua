@@ -1,5 +1,5 @@
 -- SceneBuilder/placers.lua — scaffold
-local U = require("SceneBuilder/util")
+local U = require("DREAMBase/util")
 local LOG_TAG = "SceneBuilder Placers"
 local log = U.makeLogger(LOG_TAG)
 local assertf = U.assertf

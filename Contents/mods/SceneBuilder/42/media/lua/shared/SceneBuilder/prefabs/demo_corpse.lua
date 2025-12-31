@@ -9,7 +9,7 @@ Example prefab (anchors variant), staying close to current demo style
 - Build 42 friendly; no shared/client/server in require paths
 ------------------------------------------------------------- ]]
 
-local U = require("SceneBuilder/util")
+local U = require("DREAMBase/util")
 local LOG_TAG = "SceneBuilder prefab/demo_corpse"
 local log = U.makeLogger(LOG_TAG)
 

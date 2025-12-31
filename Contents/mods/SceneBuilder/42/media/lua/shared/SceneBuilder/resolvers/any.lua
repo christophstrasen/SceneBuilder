@@ -1,5 +1,5 @@
 -- SceneBuilder/resolvers/any.lua
-local U = require("SceneBuilder/util")
+local U = require("DREAMBase/util")
 local LOG_TAG = "SceneBuilder resolver/any"
 local log = U.makeLogger(LOG_TAG)
 local assertf = U.assertf

@@ -1,7 +1,7 @@
 -- SceneBuilder/resolvers/surfaces.lua
 -- "tables_and_counters" via square flags (IsTable). Minimal, opinionated defaults.
 
-local U = require("SceneBuilder/util") -- for U.log/U.assertf
+local U = require("DREAMBase/util") -- for U.log/U.assertf
 local LOG_TAG = "SceneBuilder resolver/surfaces"
 local log = U.makeLogger(LOG_TAG)
 local assertf = U.assertf
