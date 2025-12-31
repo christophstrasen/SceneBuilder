@@ -21,5 +21,8 @@ https://github.com/christophstrasen/SceneBuilder
 Recommended (optional) for more accurate surface X/Y presets:
 - ItemStories [b42] https://steamcommunity.com/sharedfiles/filedetails/?id=3569303590
 
+Dependencies (required by mod.info):
+- DREAMBase
+
 tags=Library;Utility;Build 42;Development
 visibility=Public
