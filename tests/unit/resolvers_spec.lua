@@ -1,5 +1,3 @@
-dofile("tests/unit/bootstrap.lua")
-
 describe("SceneBuilder resolvers normalization", function()
 	it("ensurePlace normalizes defaults and fallbacks", function()
 		local Resolvers = require("SceneBuilder/resolvers")

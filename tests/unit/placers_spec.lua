@@ -1,5 +1,3 @@
-dofile("tests/unit/bootstrap.lua")
-
 describe("SceneBuilder placers helpers", function()
 	it("normalizes item type names for Base.* and module-prefixed types", function()
 		local Placers = require("SceneBuilder/placers")

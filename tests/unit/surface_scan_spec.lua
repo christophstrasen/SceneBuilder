@@ -1,5 +1,3 @@
-dofile("tests/unit/bootstrap.lua")
-
 describe("SceneBuilder surface scan", function()
 	local function makeList(items)
 		return {

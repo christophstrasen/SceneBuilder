@@ -1,5 +1,3 @@
-dofile("tests/unit/bootstrap.lua")
-
 local function reload(moduleName)
 	package.loaded[moduleName] = nil
 	return require(moduleName)

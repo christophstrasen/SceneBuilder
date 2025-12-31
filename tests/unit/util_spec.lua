@@ -1,5 +1,3 @@
-dofile("tests/unit/bootstrap.lua")
-
 describe("SceneBuilder util", function()
 	it("buildKey includes nil segments (does not collapse after nil)", function()
 		local U = require("SceneBuilder/util")
