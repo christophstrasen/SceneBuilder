@@ -92,6 +92,11 @@ function U.logCtx(tag, msg, ctx)
 end
 
 function U.log(tag, msg)
+	local okLog, Log = pcall(require, "DREAMBase/log")
+	if okLog and type(Log) == "table" and type(Log.tagged) == "function" then
+		Log.tagged("info", tostring(tag or "SB"), "%s", tostring(msg or ""))
+		return
+	end
 	-- Avoid colon in logs to prevent truncation in B42.
 	print("[", tostring(tag or "SB"), "] ", tostring(msg or ""))
 end
