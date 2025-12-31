@@ -8,8 +8,7 @@ package.path = table.concat({
 	package.path,
 }, ";")
 
-local ok, TB = pcall(require, "DREAMBase/test/bootstrap")
-if ok and type(TB) == "table" and type(TB.apply) == "function" then
+local TB = require("DREAMBase/test/bootstrap")
+if type(TB) == "table" and type(TB.apply) == "function" then
 	TB.apply()
 end
-

@@ -1,6 +1,7 @@
 # SceneBuilder
 
-_A scene composition framework for Project Zomboid (Build 42), Single Player_
+*A scene composition framework for Project Zomboid (Build 42), Single Player*
+[![CI](https://github.com/christophstrasen/SceneBuilder/actions/workflows/ci.yml/badge.svg)](https://github.com/christophstrasen/SceneBuilder/actions/workflows/ci.yml)
 
 ---
 
