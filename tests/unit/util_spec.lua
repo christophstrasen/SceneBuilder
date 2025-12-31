@@ -1,12 +1,4 @@
-package.path = table.concat({
-	"Contents/mods/SceneBuilder/42/media/lua/shared/?.lua",
-	"Contents/mods/SceneBuilder/42/media/lua/shared/?/init.lua",
-	package.path,
-}, ";")
-
-_G.getDebug = function()
-	return false
-end
+dofile("tests/unit/bootstrap.lua")
 
 describe("SceneBuilder util", function()
 	it("buildKey includes nil segments (does not collapse after nil)", function()

@@ -67,7 +67,5 @@ jobs:
           luacheck Contents/mods/SceneBuilder/42/media/lua/shared/SceneBuilder Contents/mods/SceneBuilder/42/media/lua/shared/SceneBuilder.lua
 
       - name: Run SceneBuilder unit tests (with DREAMBase)
-        env:
-          LUA_PATH: external/DREAMBase/Contents/mods/DREAMBase/42/media/lua/shared/?.lua;external/DREAMBase/Contents/mods/DREAMBase/42/media/lua/shared/?/init.lua;;
         run: |
           busted tests/unit
