@@ -74,10 +74,16 @@
 ---@field items (string|{[1]:string,[2]:integer})[]|nil
 ---@field maxItemNum integer|nil
 
+---@class SceneBuilder.ZombiesSpec : SceneBuilder.PlacerBase
+---@field count integer|nil
+---@field outfit string|nil
+---@field femaleChance number|nil
+
 ---@alias SceneBuilder.PlacerSpec
 ---| SceneBuilder.CorpseSpec
 ---| SceneBuilder.ContainerSpec
 ---| SceneBuilder.ScatterSpec
+---| SceneBuilder.ZombiesSpec
 
 -- ===== Util module ============================================================
 
@@ -128,6 +134,10 @@
 ---   state:table|nil, roomDef:RoomDef, spec:SceneBuilder.ScatterSpec,
 ---   centerSq:IsoGridSquare|nil
 ---):table, IsoGridSquare|nil                             # {WorldInventoryItem}, ctr
+---@field placeZombies fun(
+---   state:table|nil, roomDef:RoomDef, spec:SceneBuilder.ZombiesSpec,
+---   sqOverride:IsoGridSquare|nil
+---):table, IsoGridSquare|nil                             # {IsoZombie}, center
 ---@field spawnOne fun(state:table|nil, roomDef:RoomDef, spec:SceneBuilder.PlacerSpec)
 ---@field normType fun(t:any):string|any
 ---@field getDefaultCorpseOutfit fun():string
@@ -221,6 +231,22 @@
 ---@field maxPlacementSquares fun(self:SceneBuilder.ScatterBuilder, n:integer):
 ---   SceneBuilder.ScatterBuilder
 
+---@class SceneBuilder.ZombiesBuilder
+---@field place fun(
+---   self:SceneBuilder.ZombiesBuilder,
+---   strategyOrOpts:string|SceneBuilder.PlaceSpec, opts2?:table
+---):SceneBuilder.ZombiesBuilder
+---@field preSpawn fun(
+---   self:SceneBuilder.ZombiesBuilder, fn:fun(ctx:SceneBuilder.SpawnCtx)
+---):SceneBuilder.ZombiesBuilder
+---@field postSpawn fun(
+---   self:SceneBuilder.ZombiesBuilder,
+---   fn:fun(ctx:SceneBuilder.SpawnCtx, created:table)
+---):SceneBuilder.ZombiesBuilder
+---@field count fun(self:SceneBuilder.ZombiesBuilder, n:integer):SceneBuilder.ZombiesBuilder
+---@field outfit fun(self:SceneBuilder.ZombiesBuilder, name:string):SceneBuilder.ZombiesBuilder
+---@field femaleChance fun(self:SceneBuilder.ZombiesBuilder, pct:number):SceneBuilder.ZombiesBuilder
+
 -- Anchors mini-DSL object used in api:anchors(fn)
 ---@class SceneBuilder.AnchorsDSL
 ---@field name fun(self:SceneBuilder.AnchorsDSL, name:string):SceneBuilder.AnchorsDSL
@@ -236,6 +262,7 @@
 ---   typeName:string, fn:fun(sub:SceneBuilder.ContainerBuilder)
 ---):SceneBuilder.SceneAPI
 ---@field scatter fun(fn:fun(sub:SceneBuilder.ScatterBuilder)):SceneBuilder.SceneAPI
+---@field zombies fun(fn:fun(sub:SceneBuilder.ZombiesBuilder)):SceneBuilder.SceneAPI
 ---@field anchors fun(fn:fun(a:SceneBuilder.AnchorsDSL)):SceneBuilder.SceneAPI
 ---@field preSpawn fun(
 ---   fn:fun(ctx:SceneBuilder.SpawnCtx)

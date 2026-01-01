@@ -61,3 +61,90 @@ describe("SceneBuilder surfaces resolver", function()
 		assert.is_true(pool[1] == sqYes)
 	end)
 end)
+
+describe("SceneBuilder freeOrMidair resolver", function()
+	it("filters squares via isFreeOrMidair (prefer strict)", function()
+		local Registry = require("SceneBuilder/registry")
+		local captured = {}
+		Registry.bind({
+			registerResolver = function(name, fn)
+				captured[name] = fn
+			end,
+		})
+
+		package.loaded["SceneBuilder/resolvers/free_or_midair"] = nil
+		require("SceneBuilder/resolvers/free_or_midair")
+
+		local fn = captured.freeOrMidair
+		assert.is_truthy(fn)
+
+		local function makeList(items)
+			return {
+				_items = items,
+				size = function(self)
+					return #self._items
+				end,
+				get = function(self, idx0)
+					return self._items[idx0 + 1]
+				end,
+			}
+		end
+
+		local sqStrict = {
+			isFreeOrMidair = function(_, strict)
+				return strict == true
+			end,
+		}
+		local sqLoose = {
+			isFreeOrMidair = function(_, strict)
+				return strict == false
+			end,
+		}
+		local room = { getSquares = function() return makeList({ sqLoose, sqStrict }) end }
+		local roomDef = { getIsoRoom = function() return room end }
+
+		local pool = fn(roomDef, { strategy = "freeOrMidair" })
+		assert.equals(1, #pool)
+		assert.is_true(pool[1] == sqStrict)
+	end)
+
+	it("degrades to non-strict when strict yields none", function()
+		local Registry = require("SceneBuilder/registry")
+		local captured = {}
+		Registry.bind({
+			registerResolver = function(name, fn)
+				captured[name] = fn
+			end,
+		})
+
+		package.loaded["SceneBuilder/resolvers/free_or_midair"] = nil
+		require("SceneBuilder/resolvers/free_or_midair")
+
+		local fn = captured.freeOrMidair
+		assert.is_truthy(fn)
+
+		local function makeList(items)
+			return {
+				_items = items,
+				size = function(self)
+					return #self._items
+				end,
+				get = function(self, idx0)
+					return self._items[idx0 + 1]
+				end,
+			}
+		end
+
+		local sqLoose = {
+			isFreeOrMidair = function(_, strict)
+				return strict == false
+			end,
+		}
+		local room = { getSquares = function() return makeList({ sqLoose }) end }
+		local roomDef = { getIsoRoom = function() return room end }
+
+		local pool = fn(roomDef, { strategy = "freeOrMidair" })
+		assert.equals(1, #pool)
+		assert.is_true(pool[1] == sqLoose)
+	end)
+end)

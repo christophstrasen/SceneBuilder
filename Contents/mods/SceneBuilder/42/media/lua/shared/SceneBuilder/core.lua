@@ -74,6 +74,17 @@ function Scene:begin(roomDef, opts)
 				postSpawn = nil,
 				mayAdjustZ = true, --recommendation. Resolvers handle details or overrides.
 			}
+		elseif kind == "zombies" then
+			state.current = {
+				kind = "zombies",
+				count = 1,
+				outfit = nil,
+				femaleChance = 50, -- 0..100
+				place = nil,
+				preSpawn = nil,
+				postSpawn = nil,
+				mayAdjustZ = false,
+			}
 		else
 			error("Unknown builder kind " .. tostring(kind))
 		end
@@ -162,6 +173,19 @@ function Scene:begin(roomDef, opts)
 				api:maxItemNum(n)
 				return sub
 			end
+		elseif kind == "zombies" then
+			function sub:count(n)
+				api:count(n)
+				return sub
+			end
+			function sub:outfit(name)
+				api:outfit(name)
+				return sub
+			end
+			function sub:femaleChance(n)
+				api:femaleChance(n)
+				return sub
+			end
 		end
 
 		return sub
@@ -177,7 +201,7 @@ function Scene:begin(roomDef, opts)
 	--- @param strategyOrOpts string|SceneBuilder.PlaceSpec
 	--- @param opts2? SceneBuilder.ResolverOptions
 	function api:place(strategyOrOpts, opts2)
-		assertf(state.current, "place(...) requires active sub-builder. Call :corpse/:container/:scatter first.")
+		assertf(state.current, "place(...) requires active sub-builder. Call :corpse/:container/:scatter/:zombies first.")
 		local p = Resolvers.ensurePlace(strategyOrOpts, opts2)
 		if p.deterministic == nil then
 			p.deterministic = state.deterministic
@@ -263,6 +287,18 @@ function Scene:begin(roomDef, opts)
 		return api
 	end
 
+	---Add a zombies placement block. Configure with :count/:outfit/:femaleChance
+	---call :place(...). Finish with :spawn() or :spawnNow() for only this placer.
+	---@param fn fun(sub:SceneBuilder.ZombiesBuilder)
+	function api:zombies(fn)
+		assertf(type(fn) == "function", "zombies(fn) requires a function.")
+		begin("zombies")
+		fn(mkSub("zombies"))
+		assertf(state.current.place, "zombies block requires :where(...) to be set")
+		enqueueCurrent()
+		return api
+	end
+
 	function api:anchors(fn)
 		assertf(type(fn) == "function", "anchors(fn) requires a function. currently is type " .. type(fn))
 		local a = {}
@@ -337,16 +373,31 @@ function Scene:begin(roomDef, opts)
 	---Set corpse outfit by name
 	---@param name string
 	function api:outfit(name)
-		requireActive("corpse")
-		if type(name) ~= "string" then
-			log("outfit(name) expects string; got " .. tostring(name) .. " — using default " .. DEFAULT_OUTFIT)
-			state.current.outfit = DEFAULT_OUTFIT
-		else
-			local trimmed = name:match("^%s*(.-)%s*$")
-			if trimmed == "" then
-				trimmed = DEFAULT_OUTFIT
+		assertf(state.current, "outfit() no active sub-builder.")
+		if state.current.kind == "corpse" then
+			if type(name) ~= "string" then
+				log("outfit(name) expects string; got " .. tostring(name) .. " — using default " .. DEFAULT_OUTFIT)
+				state.current.outfit = DEFAULT_OUTFIT
+			else
+				local trimmed = name:match("^%s*(.-)%s*$")
+				if trimmed == "" then
+					trimmed = DEFAULT_OUTFIT
+				end
+				state.current.outfit = trimmed
 			end
-			state.current.outfit = trimmed
+		elseif state.current.kind == "zombies" then
+			if type(name) ~= "string" then
+				log("zombies outfit expects string or nil; got " .. tostring(name) .. " — using random")
+				state.current.outfit = nil
+			else
+				local trimmed = name:match("^%s*(.-)%s*$")
+				if trimmed == "" then
+					trimmed = nil
+				end
+				state.current.outfit = trimmed
+			end
+		else
+			assertf(false, "outfit() only valid for corpse/zombies, got " .. tostring(state.current.kind))
 		end
 
 		return api
@@ -407,6 +458,34 @@ function Scene:begin(roomDef, opts)
 	function api:maxItemNum(n)
 		requireActive("scatter")
 		state.current.maxItemNum = tonumber(n) or state.current.maxItemNum
+		return api
+	end
+
+	---@param n integer
+	function api:count(n)
+		requireActive("zombies")
+		local v = tonumber(n) or 1
+		if v < 1 then
+			v = 1
+		end
+		state.current.count = math.floor(v)
+		return api
+	end
+
+	--- Percentage 0..100 (engine uses integer semantics; 0.5 behaves like 0).
+	---@param pct number
+	function api:femaleChance(pct)
+		requireActive("zombies")
+		local v = tonumber(pct)
+		if v == nil then
+			v = 50
+		end
+		if v < 0 then
+			v = 0
+		elseif v > 100 then
+			v = 100
+		end
+		state.current.femaleChance = v
 		return api
 	end
 

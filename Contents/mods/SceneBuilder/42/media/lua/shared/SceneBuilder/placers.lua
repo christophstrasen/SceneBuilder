@@ -7,6 +7,8 @@ local Resolvers = require("SceneBuilder/resolvers")
 local Lifecycle = require("SceneBuilder/lifecycle")
 local SurfaceScan = require("SceneBuilder/surface_scan")
 
+-- luacheck: globals addZombiesInOutfit
+
 require("SceneBuilder/SpritesSurfaceDimensions_polyfill")
 local SD = SpriteDimensionsPolyfill
 
@@ -457,6 +459,34 @@ local function addWorldMulti(state, sq, typeName, qty, opts)
 	return created
 end
 
+---@param list any
+---@return table
+local function toLuaList(list)
+	if list == nil then
+		return {}
+	end
+	if type(list) == "table" and #list > 0 then
+		return list
+	end
+	local sizeFn = list and list.size
+	local getFn = list and list.get
+	if type(sizeFn) == "function" and type(getFn) == "function" then
+		local okSize, size = pcall(sizeFn, list)
+		if not okSize or type(size) ~= "number" then
+			return {}
+		end
+		local out = {}
+		for i = 0, size - 1 do
+			local okGet, v = pcall(getFn, list, i)
+			if okGet and v ~= nil then
+				out[#out + 1] = v
+			end
+		end
+		return out
+	end
+	return {}
+end
+
 -- Once-per-spec: normalize place, resolve pool, apply proximity, log.
 local function _gatherPoolCtx(state, roomDef, spec)
 	local place = Resolvers.ensurePlace(spec.place)
@@ -806,8 +836,84 @@ local function placeScatter(state, roomDef, spec, sqOverride)
 	return results, nil
 end
 
+--- Spawn live zombies centered around a chosen square.
+--- Uses addZombiesInOutfit(x, y, z, totalZombies, outfit, femaleChance).
+--- @param state table
+--- @param roomDef RoomDef
+--- @param spec table
+--- @param sqOverride IsoGridSquare|nil
+--- @return table, IsoGridSquare|nil
+local function placeZombies(state, roomDef, spec, sqOverride)
+	assertf(roomDef, "placeZombies needs RoomDef")
+	assertf(type(spec) == "table", "placeZombies spec table required")
+
+	if type(addZombiesInOutfit) ~= "function" then
+		log("placeZombies missing addZombiesInOutfit so skipping zombies")
+		return {}, nil
+	end
+
+	-- Gather once: place, det, pool(+proximity), anchor, poolStrategy
+	local ctx = _gatherPoolCtx(state, roomDef, spec)
+	local place, anchorName, poolStrategy = ctx.place, ctx.anchorName, ctx.poolStrategy
+
+	-- Narrow pool to shortlist (K, deterministic)
+	local shortlist = _makeShortlist(ctx, state)
+
+	-- Decide square: prefer shortlist, else explicit override, else last-resort resolveSquare
+	local sq = sqOverride
+	if not sq and shortlist and #shortlist > 0 then
+		sq = chooseSquareFromShortlist(state, place, shortlist, {
+			kind = "zombies",
+			type = spec.outfit or "",
+			anchorName = anchorName,
+			poolStrategy = poolStrategy,
+		})
+	end
+	if not sq then
+		sq = Resolvers.resolveSquare(state, roomDef, place)
+	end
+
+	if not sq then
+		log("placeZombies no square so skipping zombies")
+		return {}, nil
+	end
+
+	local count = tonumber(spec.count) or 1
+	if count < 1 then
+		count = 1
+	end
+	count = math.floor(count)
+
+	local femaleChance = tonumber(spec.femaleChance)
+	if femaleChance == nil then
+		femaleChance = 50
+	end
+	if femaleChance < 0 then
+		femaleChance = 0
+	elseif femaleChance > 100 then
+		femaleChance = 100
+	end
+
+	local x, y, z = sq:getX(), sq:getY(), sq:getZ()
+	local ok, result = pcall(addZombiesInOutfit, x, y, z, count, spec.outfit, femaleChance)
+	if not ok then
+		U.logCtx(LOG_TAG, "placeZombies addZombiesInOutfit error", { err = tostring(result) })
+		return {}, sq
+	end
+
+	local created = toLuaList(result)
+	U.logCtx(LOG_TAG, "placeZombies spawned", {
+		countRequested = count,
+		countCreated = #created,
+		x = x,
+		y = y,
+		z = z,
+	})
+	return created, sq
+end
+
 local function spawnOne(state, roomDef, spec)
-	local valid = spec and (spec.kind == "corpse" or spec.kind == "container" or spec.kind == "scatter")
+	local valid = spec and (spec.kind == "corpse" or spec.kind == "container" or spec.kind == "scatter" or spec.kind == "zombies")
 	assertf(valid, "spawnOne invalid spec.kind " .. tostring(spec and spec.kind))
 	spec.place = Resolvers.ensurePlace(spec.place)
 
@@ -842,6 +948,12 @@ local function spawnOne(state, roomDef, spec)
 		createdList = ({ placeContainer(state, roomDef, spec, nil) })[1] or {}
 	elseif spec.kind == "scatter" then
 		createdList = ({ placeScatter(state, roomDef, spec, centerSq) })[1] or {}
+	elseif spec.kind == "zombies" then
+		local created, sq = placeZombies(state, roomDef, spec, nil)
+		createdList = created or {}
+		if sq then
+			ctx.position = { x = sq:getX(), y = sq:getY(), z = sq:getZ() }
+		end
 	end
 
 	if type(spec.postSpawn) == "function" then
@@ -855,6 +967,7 @@ Placers.addWorldMulti = addWorldMulti
 Placers.placeCorpse = placeCorpse
 Placers.placeContainer = placeContainer
 Placers.placeScatter = placeScatter
+Placers.placeZombies = placeZombies
 Placers.spawnOne = spawnOne
 Placers.getDefaultCorpseOutfit = getDefaultCorpseOutfit
 Placers.normType = normType

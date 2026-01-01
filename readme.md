@@ -1,6 +1,6 @@
 # SceneBuilder
 
-*A scene composition framework for Project Zomboid (Build 42), Single Player*
+*A declarative scene composition framework for Project Zomboid (Build 42), Single Player*
 [![CI](https://github.com/christophstrasen/SceneBuilder/actions/workflows/ci.yml/badge.svg)](https://github.com/christophstrasen/SceneBuilder/actions/workflows/ci.yml)
 
 ---
@@ -140,6 +140,7 @@ These are used by placers and anchors to restrict which "pool" of squares they s
 | Resolver name         | Description                                          |
 | --------------------- | ---------------------------------------------------- |
 | `any`                 | Free squares inside the room, including surfaces.    |
+| `freeOrMidair`        | Walkable squares (not solid/tree; allows stairs).    |
 | `tables_and_counters` | Valid surface squares with table or counter sprites. |
 
 Fallbacks:  
@@ -187,7 +188,7 @@ end)
 
 ## Placers (what spawns)
 
-All placers begin with their specific call (current variants `:corpse`, `:container`, `:scatter`).
+All placers begin with their specific call (current variants `:corpse`, `:container`, `:scatter`, `:zombies`).
 
 ```lua
 :corpse(function(c)
@@ -197,6 +198,21 @@ They share the same call to a *resolver* under the friendly alias `:where`  whic
 
 ```lua
 :where(strategyOrSpec, [opts])
+```
+
+### Zombies (live)
+
+Spawn live zombies around a chosen square using `addZombiesInOutfit(...)`.
+
+```lua
+Scene:begin(roomDef, { tag = "demo_zombies" })
+  :zombies(function(z)
+    z:count(6)
+     :outfit("Police")      -- optional (nil = random)
+     :femaleChance(50)      -- 0..100 (percent)
+     :where("freeOrMidair", { fallback = { "any" } })
+  end)
+  :spawn()
 ```
 
 - **`strategyOrSpec`**: either a string resolver name (`"any"`, `"tables_and_counters"`, etc.)  

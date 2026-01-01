@@ -37,3 +37,18 @@
 ### Major decisions (update)
 - Accept only `IsTable` squares for SceneBuilder’s “tables_and_counters” strategy (explicitly not “any object with a surface”).
 - Use `getSurfaceOffsetNoTable()` as the single source of truth for table surface height; keep SpriteDimensions only for X/Y safe-box selection and optional `overrideExactOffsetZ` overrides.
+
+## Day 2 — 2026-01-01
+
+### Progress highlights
+- Added live zombie spawning via new `:zombies(...)` placer (`:count(n)`, `:outfit(name|nil)`, `:femaleChance(0..100)`), using engine `addZombiesInOutfit(...)`.
+- Added resolver strategy `freeOrMidair` (based on `IsoGridSquare:isFreeOrMidair(...)`) to avoid spawning on solid/trees/furniture; prefers strict mode and degrades to non-strict if necessary.
+- Added `demo_zombies` prefab and updated README docs to cover `freeOrMidair` and the new placer.
+- Added unit coverage for the resolver and list-conversion behavior (engine return value is a Java list-like object, not a Lua table).
+
+### Difficulties / blockers
+- None; confirmed `femaleChance` is integer-percent semantics (e.g. `0.5` behaves like `0`) via in-game console probes.
+
+### Decisions
+- Keep `:where(...)` required for `:zombies(...)` (consistent with existing placers).
+- Name the strategy `freeOrMidair` to match the engine predicate and set expectations (walkable-ish, stairs allowed).
