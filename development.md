@@ -3,9 +3,23 @@
 SceneBuilder is part of the DREAM mod family (Build 42):
 - DREAM-Workspace (multi-repo convenience): https://github.com/christophstrasen/DREAM-Workspace
 
-## Quickstart (single repo)
+Prereqs (for the `dev/` scripts): `rsync`, `inotifywait` (`inotify-tools`), `inkscape`.
 
-Prereqs: `rsync`, `inotifywait` (`inotify-tools`), `inkscape`.
+## Sync
+
+Deploy to your local Workshop wrapper folder (default):
+
+```bash
+./dev/sync-workshop.sh
+```
+
+Optional: deploy to `~/Zomboid/mods` instead:
+
+```bash
+./dev/sync-mods.sh
+```
+
+## Watch
 
 Watch + deploy (default: Workshop wrapper under `~/Zomboid/Workshop`):
 
@@ -24,13 +38,15 @@ TARGET=mods ./dev/watch.sh
 - This repo already shipped to Workshop; `Contents/mods/SceneBuilder/42/mod.info` is considered published surface.
 - The mod payload is under `Contents/mods/SceneBuilder/`.
 
-## Tests (headless)
+## Tests
 
 SceneBuilder unit tests run outside the Project Zomboid engine:
 
 ```bash
-busted tests/unit
+busted --helper=tests/helper.lua tests/unit
 ```
+
+Note: tests assume DREAMBase is available at `../DREAMBase` (DREAM-Workspace layout) or `external/DREAMBase`.
 
 Lint:
 
