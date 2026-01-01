@@ -125,6 +125,14 @@
 - **Asserts:** Use `assert(...)` as a good practice to hedge against clear programming/contract errors only
 - **Graceful Degradation:** Prefer tolerant behavior for untestable or world-variance cases. Try to fall back and emit a single debug log, and proceed.  
 
+## Tests & Lint
+
+After Lua code changes, run:
+- `luacheck Contents/mods/SceneBuilder/42/media/lua/shared/SceneBuilder Contents/mods/SceneBuilder/42/media/lua/shared/SceneBuilder.lua`
+- `busted --helper=tests/helper.lua tests/unit`
+
+Prefer using `pre-commit run --all-files` where available (mirrors CI).
+
 ## 8) Design Principles
 - Declarative DSL over ad-hoc imperative plumbing.
 - Composition-first; minimal global state; pure helpers where feasible.

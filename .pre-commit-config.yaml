@@ -6,9 +6,13 @@ repos:
         entry: luacheck Contents/mods/SceneBuilder/42/media/lua/shared/SceneBuilder Contents/mods/SceneBuilder/42/media/lua/shared/SceneBuilder.lua
         language: system
         pass_filenames: false
-      - id: busted-tests
-        name: Run busted tests
-        entry: busted tests/unit
+      - id: dreambase-tests
+        name: Run DREAMBase unit tests
+        entry: bash -lc 'if [ -d external/DREAMBase ]; then cd external/DREAMBase; elif [ -d ../DREAMBase ]; then cd ../DREAMBase; else echo "DREAMBase not found (expected external/DREAMBase or ../DREAMBase)"; exit 1; fi; busted --helper=tests/helper.lua tests/unit'
         language: system
         pass_filenames: false
-
+      - id: busted-tests
+        name: Run busted tests
+        entry: busted --helper=tests/helper.lua tests/unit
+        language: system
+        pass_filenames: false
