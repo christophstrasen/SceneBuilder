@@ -1,8 +1,8 @@
 version=1
 title=[42SP] SceneBuilder
-description=SceneBuilder - Scene authoring library for Project Zomboid (Build 42)
+description=SceneBuilder - Scene authoring library for Project Zomboid (Build 42, Single Player)
 
-NOT TESTED IN MULTIPLAYER. DON'T USE THERE. YOU HAVE BEEN WARNED. thx.
+NOT TESTED IN MULTIPLAYER. DON'T USE THERE. thx.
 
 SceneBuilder is a scene composition framework for mid-level Lua mod developers.
 It lets you spawn coherent in-world scenes in a declarative way (corpses, containers,

@@ -1,11 +1,12 @@
 # SceneBuilder
 
-*A declarative scene composition framework for Project Zomboid (Build 42), Single Player*
+*A declarative scene composition framework for Project Zomboid (Build 42), Single Player* - part of the [DREAM](https://github.com/christophstrasen/DREAM) family.
+
 [![CI](https://github.com/christophstrasen/SceneBuilder/actions/workflows/ci.yml/badge.svg)](https://github.com/christophstrasen/SceneBuilder/actions/workflows/ci.yml)
 
 ---
 
-[Steam Workshop → SceneBuilder [b42]](https://steamcommunity.com/sharedfiles/filedetails/?id=3594105442)
+[Steam Workshop → [42SP] SceneBuilder](https://steamcommunity.com/sharedfiles/filedetails/?id=3594105442)
 
 ---
 
@@ -14,7 +15,7 @@ Scenes are conceptually similar to **vanilla randomized stories** (e.g. from `RB
 
 Unlike those, SceneBuilder scenes are **not automatically distributed** into the world of Project Zomboid but are **meant to be used by modders** for any purpose.
 
-This framework is low-level in the sense that it does not provide opinions on what should spawn in which environments, rooms types etc.
+This framework is low-level in the sense that it does not provide opinions on what should spawn in which environments, room types etc.
 
 The shipped DSL can currently be extended with custom resolvers and spawn hooks.
 
@@ -56,13 +57,13 @@ Scene:begin(roomDef, { tag = "demo_lab" })
 * Unfit for Multiplayer.
 * Currently only works indoors with a RoomDef given.
 * Z-height for placed items may not be visually correct on a number of tiles. For improved accuracy and visual realism, use the **ItemStories B42** mod, which, combined with SceneBuilder’s included SpritesSurfaceDimensions Polyfill, provides good-enough results.
-* Typehinting for scene definitions is incomplete
+* Type hinting for scene definitions is incomplete
 
 ---
 
 ## Seeing it work
 
-Assuming that you are in debug mode *and your character stands in a room*, paste this into your ingame console:
+Assuming that you are in debug mode *and your character stands in a room*, paste this into your in-game console:
 ```lua
 fulldemo = require("SceneBuilder/prefabs/demo_full")
 fulldemo.makeForRoomDef(nil)
@@ -184,7 +185,7 @@ Once registered, your custom resolver can be used in `:where` or `:anchor` like 
 end)
 ```
 
-> Strategies are global so consider namespacing and watch the log for name conflicts..
+> Strategies are global so consider namespacing and watch the log for name conflicts.
 
 ---
 
@@ -290,7 +291,7 @@ end)
 **API**  
 
 - `:items(...list)` – **Mandatory**. List of unique items to spawn. Accepts `"ItemType"` or `{ "ItemType", count }`. May include same entries multiple times.
-- `:maxItemNum(n)` – Optional. Limit unique entries spawned. Entries in the item-list are treated as "unique" even if they appear multiple times which can be used as a lazy-mans "weighted distribution"
+- `:maxItemNum(n)` – Optional. Limit unique entries spawned. Entries in the item-list are treated as "unique" even if they appear multiple times which can be used as a lazy man's "weighted distribution"
 - `:maxPlacementSquares(n)` – Optional. Limit the number of squares eligible for spawning.
 - `:where(strategyOrSpec, [opts])` – **Mandatory**. See shared description above.  
 
@@ -318,7 +319,7 @@ end)
 ### How Proximity Works
 
 For each placer, SceneBuilder first gathers **all candidate squares** that match the `strategy` passed to `:where` (e.g., all desk or counter surfaces for `"tables_and_counters"`).
-If `anchor` and `anchor_proximity` are set, it then keeps only candidates within the given radius ([Chebyshev/Chessboard distance]([Chebyshev distance - Wikipedia](https://en.wikipedia.org/wiki/Chebyshev_distance))) of the anchor’s square.
+If `anchor` and `anchor_proximity` are set, it then keeps only candidates within the given radius ([Chebyshev/Chessboard distance](https://en.wikipedia.org/wiki/Chebyshev_distance)) of the anchor’s square.
 
 If **none** survive the proximity filter, a **proximity fallback** (scoped to the current `:where` ) decides what to do.
 
@@ -332,7 +333,7 @@ Configure via `proximity_fallback` in the same `:where` spec:
 | `ignore-proximity-keep-strategy` | **Remove the radius constraint** once; keep the same resolver strategy        | Still uses e.g. `"tables_and_counters"`, just without the proximity limit.             |
 | `fail`                           | Do **not** relax conditions                                                   | The **current placer** is skipped if no candidates are within proximity.               |
 
-> Planned but missing: **`ignore-strategy-keep-proximity`** and **`ignore-proximity-and-strategy`** (equivalent to `any`”).
+> Planned but missing: **`ignore-strategy-keep-proximity`** and **`ignore-proximity-and-strategy`** (equivalent to `any`).
 
 **Examples**
 
@@ -422,8 +423,8 @@ Scene authors are encouraged to organize and name their own scenes however they 
 * Additional inbuilt resolvers e.g. by doors, windows.
 * Additional placers for live zombies, possibly vehicles.
 * Support passing an IsoGridSquare instead of a named anchor.
-* Find a way to supress ItemStories automatic world spawning for those who want to include that mod just for the SpriteSurfaceDimensions.present.
-* Improve and clean up typehinting
+* Find a way to suppress ItemStories automatic world spawning for those who want to include that mod just for the SpriteSurfaceDimensions.present.
+* Improve and clean up type hinting
 * Support for outdoor scenes.
 
 ---
