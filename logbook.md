@@ -52,3 +52,17 @@
 ### Decisions
 - Keep `:where(...)` required for `:zombies(...)` (consistent with existing placers).
 - Name the strategy `freeOrMidair` to match the engine predicate and set expectations (walkable-ish, stairs allowed).
+
+## Day 3 — 2026-01-02
+
+### Progress highlights
+- Added resolver strategy `centroid`: computes the centroid of all room squares (works well for L-shaped rooms) and returns squares ordered center-out in concentric rings.
+- Added resolver strategy `centroidFreeOrMidair`: same centroid ordering, but filters to walkable-ish squares (via `IsoGridSquare:isFreeOrMidair`), preferring strict mode and degrading to non-strict if necessary.
+- Registered both resolvers in `SceneBuilder/resolvers/init.lua` and documented them in the built-in resolver table in `readme.md`.
+
+### Learnings
+- A “rotate around center” placement attempt can be modeled cleanly as a deterministic square ordering problem (resolver) rather than placer-level heuristics.
+- The centroid computed from actual room squares is a better “room center” than bounding-box center for irregular rooms.
+
+### Next steps
+- Explore a “spawn near sprite” resolver family where authors can specify a sprite name/prefix (e.g. `table%`) as a target and SceneBuilder chooses squares near matching objects, still restricted to the same room.

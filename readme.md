@@ -137,11 +137,13 @@ These are used by placers and anchors to restrict which "pool" of squares they s
 
 ### Built-in Resolvers
 
-| Resolver name         | Description                                          |
-| --------------------- | ---------------------------------------------------- |
-| `any`                 | Free squares inside the room, including surfaces.    |
-| `freeOrMidair`        | Walkable squares (not solid/tree; allows stairs).    |
-| `tables_and_counters` | Valid surface squares with table or counter sprites. |
+| Resolver name            | Description                                                     |
+| ------------------------ | --------------------------------------------------------------- |
+| `any`                    | Free squares inside the room, including surfaces.               |
+| `freeOrMidair`           | Walkable squares (not solid/tree; allows stairs).               |
+| `centroid`               | Center-out pool based on room square centroid (good for L-shape). |
+| `centroidFreeOrMidair`   | Centroid pool filtered to walkable squares.                     |
+| `tables_and_counters`    | Valid surface squares with table or counter sprites.            |
 
 Fallbacks:  
 
