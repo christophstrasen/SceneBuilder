@@ -13,6 +13,9 @@
 ---   • Strategy fallback (place.fallback) is a Resolvers policy.
 ---   • Proximity fallback is handled elsewhere (_applyProximityPass).
 
+-- Editor-only type annotations live in this file; safe to load at runtime.
+require("SceneBuilder/types")
+
 local U = require("DREAMBase/util")
 local LOG_TAG = "SceneBuilder Resolvers"
 local log = U.makeLogger(LOG_TAG)
@@ -55,9 +58,9 @@ local function _normAnchorRef(name)
 end
 
 --- Normalize the PlaceSpec.
---- @param strategyOrOpts string|table|nil
---- @param opts table|nil
---- @return SceneBuilder.PlaceSpec
+---@param strategyOrOpts string|table|nil
+---@param opts table|nil
+---@return SceneBuilder.PlaceSpec
 local function _ensurePlace(strategyOrOpts, opts)
 	if type(strategyOrOpts) == "string" then
 		opts = shallowCopy(opts or {})
@@ -86,6 +89,7 @@ local function _ensurePlace(strategyOrOpts, opts)
 	-- making sure fallback is a clean list of strings.
 	local fblist = U.asStringList(opts.fallback, { "any" })
 
+	---@type SceneBuilder.PlaceSpec
 	local place = {
 		strategy = opts.strategy or "any",
 		anchor = opts.anchor and _normAnchorRef(opts.anchor) or nil,
@@ -160,11 +164,11 @@ end
 --- separate from proximity fallbacks and should only be triggered when
 --- a resolver produces zero results in the entire room.
 ---
---- @param roomDef RoomDef             -- Target room definition
---- @param place SceneBuilder.PlaceSpec -- Normalized placement spec
---- @param isFallbackAttempt? boolean   -- Internal guard to prevent recursion
---- @return IsoGridSquare[]|nil pool    -- Candidate squares or nil
---- @return string|nil usedStrategy     -- Name of the strategy that succeeded
+---@param roomDef RoomDef             -- Target room definition
+---@param place SceneBuilder.PlaceSpec -- Normalized placement spec
+---@param isFallbackAttempt? boolean   -- Internal guard to prevent recursion
+---@return IsoGridSquare[]|nil pool    -- Candidate squares or nil
+---@return string|nil usedStrategy     -- Name of the strategy that succeeded
 local function resolvePool(roomDef, place, isFallbackAttempt)
 	local primary = place and place.strategy or "any"
 	local fbList = (place and place.fallback) or { "any" }
@@ -230,10 +234,10 @@ end
 --- Resolution order:
 ---   1) If an explicit anchor resolves to a live square, return it (author win).
 ---   2) Else use resolvePool(...) to try strategy → fallback list; return first.
---- @param state table|nil     -- SceneBuilder state (anchors live here)
---- @param roomDef RoomDef     -- Target room definition
---- @param place table         -- Normalized PlaceSpec (strategy, fallback, anchor…)
---- @return IsoGridSquare|nil  -- Chosen square or nil if none found
+---@param state table|nil     -- SceneBuilder state (anchors live here)
+---@param roomDef RoomDef     -- Target room definition
+---@param place SceneBuilder.PlaceSpec|nil -- Normalized PlaceSpec (strategy, fallback, anchor…)
+---@return IsoGridSquare|nil  -- Chosen square or nil if none found
 local function resolveSquare(state, roomDef, place)
 	assertf(roomDef, "resolveSquare needs RoomDef")
 	place = _ensurePlace(place)

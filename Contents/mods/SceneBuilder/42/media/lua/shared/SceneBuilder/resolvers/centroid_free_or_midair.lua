@@ -1,6 +1,13 @@
 -- SceneBuilder/resolvers/centroid_free_or_midair.lua
 -- "centroidFreeOrMidair" based on room centroid, ordered center-out in rings.
 
+---@class SceneBuilder.PlaceSpec
+---@field strategy string|nil
+---@field limit number|nil
+
+-- Editor-only type annotations live in this file; safe to load at runtime.
+require("SceneBuilder/types")
+
 local U = require("DREAMBase/util")
 local LOG_TAG = "SceneBuilder resolver/centroidFreeOrMidair"
 local assertf = U.assertf

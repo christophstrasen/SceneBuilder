@@ -39,6 +39,7 @@
 ---@field whitelist string[]|nil
 ---@field deterministic boolean|nil
 ---@field maxPlacementSquares number|nil
+---@field distribution string|nil
 ---@field anchor_proximity integer|nil          -- Chebyshev radius (floored); default 2
 ---@field respect_strategy boolean|nil          -- default false (proximity over strategy)
 ---@field proximity_fallback SceneBuilder.ProximityFallback|nil
