@@ -1,28 +1,29 @@
 version=1
+id=3249876543
 title=[42SP] SceneBuilder
 description=SceneBuilder - Scene authoring library for Project Zomboid (Build 42, Single Player)
-
-NOT TESTED IN MULTIPLAYER. DON'T USE THERE. thx.
-
-SceneBuilder is a scene composition framework for mid-level Lua mod developers.
-It lets you spawn coherent in-world scenes in a declarative way (corpses, containers,
-clutter, blood, and more), using anchors, resolvers, and composable placers.
-
-Highlights:
-- surface-aware item placement
-- deterministic scenes by default (same inputs yield the same layout)
-- extensible via custom resolvers and spawn hooks
-
-This is a developer library, not gameplay content. It does nothing on its own.
-
-GitHub (docs, source, examples):
-https://github.com/christophstrasen/SceneBuilder
-
-Recommended (optional) for more accurate surface X/Y presets:
-- ItemStories [b42] https://steamcommunity.com/sharedfiles/filedetails/?id=3569303590
-
-Dependencies (required by mod.info):
-- DREAMBase
-
+description=
+description=NOT TESTED IN MULTIPLAYER. DON'T USE THERE. thx.
+description=
+description=SceneBuilder is a scene composition framework for mid-level Lua mod developers.
+description=It lets you spawn coherent in-world scenes in a declarative way (corpses, containers,
+description=clutter, blood, and more), using anchors, resolvers, and composable placers.
+description=
+description=Highlights:
+description=- surface-aware item placement
+description=- deterministic scenes by default (same inputs yield the same layout)
+description=- extensible via custom resolvers and spawn hooks
+description=
+description=This is a developer library, not gameplay content. It does nothing on its own.
+description=
+description=GitHub (docs, source, examples):
+description=https://github.com/christophstrasen/SceneBuilder
+description=
+description=Recommended (optional) for more accurate surface X/Y presets:
+description=- ItemStories [b42] https://steamcommunity.com/sharedfiles/filedetails/?id=3569303590
+description=
+description=Dependencies (required by mod.info):
+description=- DREAMBase
+description=
 tags=Library;Utility;Build 42;Development
 visibility=Public
