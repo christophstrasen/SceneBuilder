@@ -5,6 +5,6 @@ versionMin=42.0
 poster=poster.png
 icon=icon_64.png
 authors=Karmachameleon
-version=0.1
+version=0.1.1
 require=\DREAMBase
 loadModAfer=\ItemStoriesB42

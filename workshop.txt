@@ -1,5 +1,5 @@
 version=1
-id=3249876543
+id=3594105442
 title=[42SP] SceneBuilder
 description=SceneBuilder - Scene authoring library for Project Zomboid (Build 42, Single Player)
 description=
@@ -25,5 +25,5 @@ description=
 description=Dependencies (required by mod.info):
 description=- DREAMBase
 description=
-tags=Library;Utility;Build 42;Development
+tags=Framework;Build 42;
 visibility=Public
