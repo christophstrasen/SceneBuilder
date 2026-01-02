@@ -3,7 +3,7 @@
 SceneBuilder is a declarative scene building library for Project Zomboid Build 42.
 
 It is part of the wider DREAM mod family:
-- Maintainer convenience repo (multi-repo sync/watch): https://github.com/christophstrasen/DREAM-Workspace
+- Maintainer convenience repo (multi-repo sync/watch): https://github.com/christophstrasen/DREAM
 
 ## Development quickstart
 

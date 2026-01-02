@@ -1,7 +1,7 @@
 # SceneBuilder — Development
 
 SceneBuilder is part of the DREAM mod family (Build 42):
-- DREAM-Workspace (multi-repo convenience): https://github.com/christophstrasen/DREAM-Workspace
+- DREAM (multi-repo convenience): https://github.com/christophstrasen/DREAM
 
 Prereqs (for the `dev/` scripts): `rsync`, `inotifywait` (`inotify-tools`), `inkscape`.
 
@@ -46,7 +46,7 @@ SceneBuilder unit tests run outside the Project Zomboid engine:
 busted --helper=tests/helper.lua tests/unit
 ```
 
-Note: tests assume DREAMBase is available at `../DREAMBase` (DREAM-Workspace layout) or `external/DREAMBase`.
+Note: tests assume DREAMBase is available at `../DREAMBase` (DREAM layout) or `external/DREAMBase`.
 
 ## Lint
 
