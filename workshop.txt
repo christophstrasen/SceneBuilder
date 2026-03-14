@@ -1,6 +1,6 @@
 version=1
 id=3594105442
-title=[42SP] SceneBuilder - A declarative scene composition framework.
+title=[42SP] SceneBuilder
 description=[h1]SceneBuilder[/h1]
 description=
 description=[i]A declarative scene composition framework for Project Zomboid (Build 42), Single Player[/i] - part of the [url=https://github.com/christophstrasen/DREAM]DREAM[/url] family.
